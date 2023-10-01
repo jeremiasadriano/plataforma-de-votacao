@@ -1,0 +1,31 @@
+{
+    "nomeEntity": " Adriano",
+    "senhaEntity": "Jeremias1",
+    "sexoEntity": "M",
+    "emailEntity": "jeremias@gmail.com",
+    "dataEntity": "2023-01",
+    "estudanteEntities": 1,
+    "estadoEntity": true,
+    "role": "gerente"
+}
+
+
+{
+    "nomeCurso": "fafae",
+    "turnoEstudante": "Diurno",
+    "anoEstudante": 3,
+    "anoAtual": "2023",
+    "finalAno": "2024",
+    "estudanteEntities": [
+        {
+            "nomeEntity": "Jeremias Adriano",
+            "senhaEntity": "Jeremias1",
+            "sexoEntity": "M",
+            "emailEntity": "jeremias@gmail.com",
+            "dataEntity": "2023-01",
+            "estudanteEntities": null,
+            "estadoEntity": true,
+            "role": "gerente"
+        }
+    ]
+}
