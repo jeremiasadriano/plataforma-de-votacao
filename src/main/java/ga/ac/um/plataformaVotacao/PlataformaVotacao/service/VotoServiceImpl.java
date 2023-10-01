@@ -2,6 +2,7 @@ package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.OpcoesVotacao;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.VotoEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.OpcoesVotacaoRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.VotoRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,11 @@ import java.util.Optional;
 public class VotoServiceImpl implements VotoService {
 
     private VotoRepository objVotoRepository;
-    private Opcoes
+    private OpcoesVotacaoRepository objOpcoesVotacaoRepository;
 
-    public VotoServiceImpl(VotoRepository objVotoRepository) {
+    public VotoServiceImpl(VotoRepository objVotoRepository, OpcoesVotacaoRepository objOpcoesVotacaoRepository) {
         this.objVotoRepository = objVotoRepository;
+        this.objOpcoesVotacaoRepository = objOpcoesVotacaoRepository;
     }
 
     @Override
@@ -27,7 +29,8 @@ public class VotoServiceImpl implements VotoService {
 
     @Override
     public ResponseEntity<OpcoesVotacao> votar(Long idOpcao, long idEstudante) {
-        Optional<OpcoesVotacao> objOptionalOpcoesVotacao = this.objVotoRepository.findBy(idOpcao);
+        Optional<OpcoesVotacao> objOptionalOpcoesVotacao = this.objOpcoesVotacaoRepository.findById(idOpcao);
+        if (objOptionalOpcoesVotacao.isEmpty()) return ResponseEntity.badRequest().build();
 
         return null;
     }
