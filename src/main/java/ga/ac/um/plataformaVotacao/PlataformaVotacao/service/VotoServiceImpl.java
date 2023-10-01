@@ -32,6 +32,12 @@ public class VotoServiceImpl implements VotoService {
         Optional<OpcoesVotacao> objOptionalOpcoesVotacao = this.objOpcoesVotacaoRepository.findById(idOpcao);
         if (objOptionalOpcoesVotacao.isEmpty()) return ResponseEntity.badRequest().build();
 
-        return null;
+        OpcoesVotacao opcoesVotacao = new OpcoesVotacao();
+        long voto = objOptionalOpcoesVotacao.get().getVoteCount();
+
+        voto++;
+        opcoesVotacao.setIdEstudanteVoto(idEstudante);
+        opcoesVotacao.setVoteCount(voto);
+        return ResponseEntity.ok(this.objOpcoesVotacaoRepository.save(opcoesVotacao));
     }
 }
