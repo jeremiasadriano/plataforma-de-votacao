@@ -2,6 +2,7 @@ package ga.ac.um.plataformaVotacao.PlataformaVotacao.controller;
 
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.AdminEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.AdminService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +18,12 @@ public class AdminController {
     }
 
     @PostMapping("/registarAdmin")
-    public ResponseEntity<AdminEntity> criarConta(@RequestBody AdminEntity dadosAdmin) {
+    public ResponseEntity<AdminEntity> criarConta(@Valid @RequestBody AdminEntity dadosAdmin) {
         return this.objAdminService.criarConta(dadosAdmin);
     }
 
     @GetMapping("/login/emailAdmin={emailEntity}&senha={senhaEntity}")
-    public ResponseEntity<String> fazerLogin(@PathVariable("emailEntity") String emailEntity, @PathVariable("senhaEntity") String senhaEntity) {
+    public ResponseEntity<String> fazerLogin(@Valid @PathVariable("emailEntity") String emailEntity, @PathVariable("senhaEntity") String senhaEntity) {
         return this.objAdminService.fazerLogin(emailEntity, senhaEntity);
     }
 
@@ -32,7 +33,7 @@ public class AdminController {
     }
 
     @PutMapping("/perfil/adminID={id}")
-    public ResponseEntity<AdminEntity> editarPerfil(@RequestBody AdminEntity dadosAdmin, @PathVariable("id") long id) throws Exception {
+    public ResponseEntity<AdminEntity> editarPerfil(@Valid @RequestBody AdminEntity dadosAdmin, @PathVariable("id") long id) throws Exception {
         return this.objAdminService.editarPerfil(dadosAdmin, id);
     }
 
@@ -45,4 +46,5 @@ public class AdminController {
     public ResponseEntity<List<AdminEntity>> listarAdmin() {
         return this.objAdminService.listarAdmin();
     }
+
 }

@@ -30,7 +30,7 @@ public abstract class UsuarioModel implements Serializable {
     @Column(name = "sexo_entity")
     private String sexoEntity;
 
-    @NotBlank
+@NotBlank
     @Email
     @Column(name = "email_entity")
     private String emailEntity;

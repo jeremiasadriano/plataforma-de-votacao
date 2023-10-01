@@ -14,4 +14,9 @@ public class OpcoesVotacao {
 
     @Column(name = "opcoes_voto")
     private String opcoesVoto;
+
+    @Column(name = "vote_count")
+    private Long voteCount;
+
+
 }

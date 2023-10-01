@@ -3,6 +3,7 @@ package ga.ac.um.plataformaVotacao.PlataformaVotacao.controller;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.CursoEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.CursoService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class CursoController {
     }
 
     @PostMapping("/registar")
-    public ResponseEntity<CursoEntity> criarCurso_E_Estudante(@RequestBody CursoEntity dadosEstudante) {
+    public ResponseEntity<CursoEntity> criarCurso_E_Estudante(@Valid @RequestBody CursoEntity dadosEstudante) {
         return this.objCursoService.criarCurso_E_Estudante(dadosEstudante);
     }
 
@@ -26,8 +27,9 @@ public class CursoController {
     public ResponseEntity<List<CursoEntity>> listarCurso_E_Estudante() {
         return this.objCursoService.listarCurso_E_Estudante();
     }
+
     @GetMapping("/curso/id={idCurso}")
-    public ResponseEntity<List<EstudanteEntity>>listarEstudantesDoCurso(@PathVariable("idCurso") long idCurso ){
+    public ResponseEntity<List<EstudanteEntity>> listarEstudantesDoCurso(@PathVariable("idCurso") long idCurso) {
         return this.objCursoService.listarEstudantesDoCurso(idCurso);
     }
 }

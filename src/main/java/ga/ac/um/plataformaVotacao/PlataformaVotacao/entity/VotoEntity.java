@@ -17,11 +17,11 @@ public class VotoEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "estudante_criador_votoFk")
+    private Long idEstudanteFk;
+
     @Column(name = "titulo_votacao", unique = true)
     private String tituloVotacao;
-
-    @Column(name = "criador_voto_fk")
-    private Long criadorVotoEntity;
 
     @Column(name = "estadoVotacao")
     private Boolean estadoVotacao;

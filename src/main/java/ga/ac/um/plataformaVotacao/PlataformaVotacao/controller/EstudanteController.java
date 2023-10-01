@@ -2,6 +2,7 @@ package ga.ac.um.plataformaVotacao.PlataformaVotacao.controller;
 
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.EstudanteService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +18,12 @@ public class EstudanteController {
     }
 
     @PostMapping("/registar/estudante")
-    public ResponseEntity<?> criarConta(@RequestBody EstudanteEntity dadosEstudante) {
+    public ResponseEntity<?> criarConta(@Valid @RequestBody EstudanteEntity dadosEstudante) {
         return this.objEstudanteService.criarConta(dadosEstudante);
     }
 
     @GetMapping("/login/email={emailEstudante}&senha={senhaEstudante}")
-    public ResponseEntity<EstudanteEntity> login(@RequestBody @PathVariable("emailEstudante") String emailEstudante, @PathVariable("senhaEstudante") String senhaEstudante) {
+    public ResponseEntity<EstudanteEntity> login(@Valid @RequestBody @PathVariable("emailEstudante") String emailEstudante, @PathVariable("senhaEstudante") String senhaEstudante) {
         return this.objEstudanteService.login(emailEstudante, senhaEstudante);
     }
 
