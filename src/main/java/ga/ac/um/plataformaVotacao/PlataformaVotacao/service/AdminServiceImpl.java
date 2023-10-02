@@ -24,7 +24,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public ResponseEntity<String> fazerLogin(String emailEntity, String senhaEntity) {
-        AdminEntity adminEntity = this.objAdminRepository.findByEmailEntityAndSenhaEntity(emailEntity, senhaEntity);
+        AdminEntity adminEntity = this.objAdminRepository.findByEmailAndSenha(emailEntity, senhaEntity);
 
         if (adminEntity == null) return ResponseEntity.badRequest().body("Usuario não encontrado");
         else return ResponseEntity.ok().body("Hello Usuario");
@@ -43,12 +43,12 @@ public class AdminServiceImpl implements AdminService {
 
         if (adminEntityOptional.isEmpty()) throw new Exception("Usuario Vazio");
 
-        adminEntityOptional.get().setNomeEntity(dadosAdmin.getNomeEntity());
-        adminEntityOptional.get().setSenhaEntity(dadosAdmin.getSenhaEntity());
-        adminEntityOptional.get().setSexoEntity(dadosAdmin.getSexoEntity());
-        adminEntityOptional.get().setDataEntity(dadosAdmin.getDataEntity());
-        adminEntityOptional.get().setEmailEntity(dadosAdmin.getEmailEntity());
-        adminEntityOptional.get().setEstadoEntity(dadosAdmin.isEstadoEntity());
+        adminEntityOptional.get().setNome(dadosAdmin.getNome());
+        adminEntityOptional.get().setSenha(dadosAdmin.getSenha());
+        adminEntityOptional.get().setSexo(dadosAdmin.getSexo());
+        adminEntityOptional.get().setDataRegistro(dadosAdmin.getDataRegistro());
+        adminEntityOptional.get().setEmail(dadosAdmin.getEmail());
+        adminEntityOptional.get().setEstadoConta(dadosAdmin.isEstadoConta());
         adminEntityOptional.get().setUsernameAdmin(dadosAdmin.getUsernameAdmin());
         adminEntityOptional.get().setCargoAdmin(dadosAdmin.getCargoAdmin());
 

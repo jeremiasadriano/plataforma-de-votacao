@@ -23,7 +23,7 @@ public class EstudanteServiceImpl implements EstudanteService {
 
     @Override
     public ResponseEntity<EstudanteEntity> login(String emailEstudante, String senhaEstudante) {
-        EstudanteEntity estudanteEntity = this.objEstudanteRepository.findByEmailEntityAndSenhaEntity(emailEstudante, senhaEstudante);
+        EstudanteEntity estudanteEntity = this.objEstudanteRepository.findByEmailAndSenha(emailEstudante, senhaEstudante);
         if (estudanteEntity == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok().body(estudanteEntity);
     }
@@ -39,9 +39,9 @@ public class EstudanteServiceImpl implements EstudanteService {
         Optional<EstudanteEntity> estudanteEntity = this.objEstudanteRepository.findById(idEstudante);
         if (estudanteEntity.isEmpty()) throw new Exception("Estudante Vazio");
 
-        estudanteEntity.get().setNomeEntity(dadosEstudante.getNomeEntity());
-        estudanteEntity.get().setSenhaEntity(dadosEstudante.getSenhaEntity());
-        estudanteEntity.get().setEmailEntity(dadosEstudante.getEmailEntity());
+        estudanteEntity.get().setNome(dadosEstudante.getNome());
+        estudanteEntity.get().setSenha(dadosEstudante.getSenha());
+        estudanteEntity.get().setEmail(dadosEstudante.getEmail());
         this.objEstudanteRepository.save(estudanteEntity.get());
         return ResponseEntity.accepted().body("Dados Atualizados com sucesso");
     }

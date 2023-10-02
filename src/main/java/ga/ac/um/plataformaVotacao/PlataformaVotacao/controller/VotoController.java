@@ -19,4 +19,7 @@ public class VotoController {
     public ResponseEntity<?> criarVotacao(@RequestBody VotoEntity dadosVotoEntity) {
         return this.objVotoService.criarVotacao(dadosVotoEntity);
     }
+    public  ResponseEntity<?> votar(){
+        return null;
+    }
 }

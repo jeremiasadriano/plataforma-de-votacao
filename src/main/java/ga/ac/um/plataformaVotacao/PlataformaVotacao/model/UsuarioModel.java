@@ -19,25 +19,25 @@ public abstract class UsuarioModel implements Serializable {
     private Long id;
 
     @NotBlank
-    @Column(name = "nome_entity")
-    private String nomeEntity;
+    @Column(name = "nome")
+    private String nome;
 
     @NotBlank
     @Size(min = 8)
-    @Column(name = "senha_entity")
-    private String senhaEntity;
+    @Column(name = "senha")
+    private String senha;
 
-    @Column(name = "sexo_entity")
-    private String sexoEntity;
+    @Column(name = "sexo")
+    private String sexo;
 
-@NotBlank
+    @NotBlank
     @Email
-    @Column(name = "email_entity")
-    private String emailEntity;
+    @Column(name = "email")
+    private String email;
 
-    @Column(name = "data_entity")
-    private String dataEntity;
+    @Column(name = "data_registro")
+    private String dataRegistro;
 
-    @Column(name = "estado_entity")
-    private boolean estadoEntity;
+    @Column(name = "estado_conta")
+    private boolean estadoConta;
 }

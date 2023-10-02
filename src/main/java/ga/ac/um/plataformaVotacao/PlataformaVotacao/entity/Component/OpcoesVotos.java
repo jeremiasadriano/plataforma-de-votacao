@@ -16,9 +16,14 @@ public class OpcoesVotos {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "voto_id")
-    private Long voto_id;
-
     @Column(name = "opcoes")
     private String opcoes;
+
+    @Column(name = "voto_contador")
+    private Long votoContador;
+
+    @PrePersist
+    private void prePresist() {
+        this.votoContador = (long) 0;
+    }
 }

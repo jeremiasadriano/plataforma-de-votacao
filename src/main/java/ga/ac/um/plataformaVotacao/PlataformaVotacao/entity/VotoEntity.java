@@ -24,6 +24,9 @@ public class VotoEntity {
     @Column(name = "estado_votacao")
     private Boolean estadoVotacao;
 
+    @Column(name = "estudante_id")
+    private Long estudante_id;
+
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "voto_id", referencedColumnName = "id")
     private List<OpcoesVotos> opcoesVotos = new ArrayList<>();
