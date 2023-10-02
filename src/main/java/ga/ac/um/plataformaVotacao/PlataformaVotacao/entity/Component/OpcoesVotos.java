@@ -27,6 +27,6 @@ public class OpcoesVotos {
 
     @PrePersist
     private void prePresist() {
-        this.votoContador = (long) 0;
+        this.votoContador = Long.parseLong("0");
     }
 }
