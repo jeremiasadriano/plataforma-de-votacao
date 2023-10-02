@@ -2,11 +2,12 @@ package ga.ac.um.plataformaVotacao.PlataformaVotacao.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
 
 @Getter
@@ -28,14 +29,19 @@ public class CursoEntity {
     @Column(name = "turno_estudante")
     private String turnoEstudante;
 
-    @NotBlank
+    @NotNull
     @Column(name = "ano_estudante")
     private Integer anoEstudante;
 
-    @Column(name = "data_insercao", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-    private LocalDate anoAtual;
+    @Column(name = "data_insercao")
+    private Integer anoAtual;
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
     private List<EstudanteEntity> estudanteEntities;
+
+    @PrePersist
+    private void prePresist() {
+        this.anoAtual = Calendar.getInstance().get(Calendar.YEAR);
+    }
 
 }
