@@ -21,7 +21,10 @@ public class EstudanteEntity extends UsuarioModel {
     @Column(name = "role")
     private String role;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "estudante_criador_votoFk", referencedColumnName = "id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "curso_fk")
+    private CursoEntity curso;
+
+    @OneToMany(mappedBy = "estudante", cascade = CascadeType.ALL)
     private List<VotoEntity> votoEntity;
 }

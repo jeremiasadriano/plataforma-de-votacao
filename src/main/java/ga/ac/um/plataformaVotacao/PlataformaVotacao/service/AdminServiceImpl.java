@@ -1,7 +1,7 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.AdminEntity;
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.AdminRepository;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +11,7 @@ import java.util.Optional;
 @Service
 public class AdminServiceImpl implements AdminService {
     private final AdminRepository objAdminRepository;
+
 
     public AdminServiceImpl(AdminRepository objAdminRepository) {
         this.objAdminRepository = objAdminRepository;

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -31,13 +32,10 @@ public class CursoEntity {
     @Column(name = "ano_estudante")
     private Integer anoEstudante;
 
-    @Column(name = "ano_atual")
-    private String anoAtual;
+    @Column(name = "data_insercao", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    private LocalDate anoAtual;
 
-    @Column(name = "final_ano")
-    private String finalAno;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "curso_estudante_fk", referencedColumnName = "id")
+    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
     private List<EstudanteEntity> estudanteEntities;
+
 }

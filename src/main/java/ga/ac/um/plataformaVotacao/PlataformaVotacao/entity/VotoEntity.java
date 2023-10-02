@@ -1,11 +1,8 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.entity;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.OpcoesVotacao;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -17,8 +14,9 @@ public class VotoEntity {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "estudante_criador_votoFk")
-    private Long idEstudanteFk;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "estudante_id", referencedColumnName = "id")
+    private EstudanteEntity estudante;
 
     @Column(name = "titulo_votacao", unique = true)
     private String tituloVotacao;
@@ -26,7 +24,5 @@ public class VotoEntity {
     @Column(name = "estadoVotacao")
     private Boolean estadoVotacao;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "voto_opcoes_fk", referencedColumnName = "id")
-    private List<OpcoesVotacao> opcoesVotacao;
+    private String opcoes;
 }
