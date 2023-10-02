@@ -33,14 +33,16 @@ public class VotoServiceImpl implements VotoService {
         if (objOptionalOpcoesVotacao.isEmpty()) return ResponseEntity.badRequest().build();
 
         OpcoesVotacao opcoesVotacao = new OpcoesVotacao();
-        long voto = objOptionalOpcoesVotacao.get().getVoteCount();
+        Long voto = objOptionalOpcoesVotacao.get().getVoteCount();
 
-        if (voto < -1) {
-            voto = 0;
+        if (voto == null) {
+            voto = (long) 1;
+        } else {
+            voto++;
         }
-        voto++;
         opcoesVotacao.setIdEstudanteVoto(idEstudante);
         opcoesVotacao.setVoteCount(voto);
+        opcoesVotacao.setOpcoesVoto(objOptionalOpcoesVotacao.get().getOpcoesVoto());
         return ResponseEntity.ok(this.objOpcoesVotacaoRepository.save(opcoesVotacao));
     }
 }
