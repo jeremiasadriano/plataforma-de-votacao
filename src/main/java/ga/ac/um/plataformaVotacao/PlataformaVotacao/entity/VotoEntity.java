@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -25,5 +26,5 @@ public class VotoEntity {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "voto_id", referencedColumnName = "id")
-    private List<OpcoesVotos> opcoesVotos;
+    private List<OpcoesVotos> opcoesVotos = new ArrayList<>();
 }

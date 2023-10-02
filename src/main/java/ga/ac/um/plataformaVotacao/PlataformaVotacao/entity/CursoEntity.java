@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class CursoEntity implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "curso_id", referencedColumnName = "id")
-    private List<EstudanteEntity> estudanteEntities;
+    private List<EstudanteEntity> estudanteEntities = new ArrayList<>();
 
     @PrePersist
     private void prePresist() {

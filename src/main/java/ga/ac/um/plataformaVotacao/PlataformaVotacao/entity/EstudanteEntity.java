@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -22,5 +23,5 @@ public class EstudanteEntity extends UsuarioModel {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "estudante_id", referencedColumnName = "id")
-    private List<VotoEntity> votoEntities;
+    private List<VotoEntity> votoEntities = new ArrayList<>();
 }
