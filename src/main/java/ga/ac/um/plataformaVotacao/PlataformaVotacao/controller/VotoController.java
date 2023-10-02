@@ -1,6 +1,5 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.controller;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.OpcoesVotos;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.VotoEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.VotoService;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class VotoController {
         return this.objVotoService.criarVotacao(dadosVotoEntity);
     }
 
-    @GetMapping("/estudante/votar/idp={idp}&ide={ide}")
+    @PutMapping("/estudante/votar/idp={idp}&ide={ide}")
     public ResponseEntity<?> votar(@RequestBody @PathVariable("idp") Long idOpcoes, @PathVariable("ide") Long idEstudante) {
         return this.objVotoService.votar(idOpcoes,idEstudante);
     }

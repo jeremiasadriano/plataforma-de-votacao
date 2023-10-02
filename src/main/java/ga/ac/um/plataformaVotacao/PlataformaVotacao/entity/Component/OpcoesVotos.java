@@ -22,6 +22,9 @@ public class OpcoesVotos {
     @Column(name = "voto_contador")
     private Long votoContador;
 
+    @Column(name = "voto_id")
+    private Long voto_id;
+
     @Column(name = "estudante_id")
     private Long estudante_id;
 

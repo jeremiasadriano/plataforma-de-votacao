@@ -35,10 +35,13 @@ public class VotoServiceImpl implements VotoService {
 
         objOpcoesVotos.setOpcoes(optionalOpcoesVotos.get().getOpcoes());
         objOpcoesVotos.setEstudante_id(idEstudante);
-        objOpcoesVotos.setVotoContador(optionalOpcoesVotos.get().getVotoContador() + 1);
-        this.objOpcoesVotosRepository.save(objOpcoesVotos);
+        objOpcoesVotos.setVoto_id(optionalOpcoesVotos.get().getVoto_id());
 
-        return ResponseEntity.ok(this.objVotoRepository.findAll());
+        Long valorVotosIncremento = optionalOpcoesVotos.get().getVotoContador();
+        valorVotosIncremento++;
+        objOpcoesVotos.setVotoContador(valorVotosIncremento);
+
+        return ResponseEntity.ok(this.objOpcoesVotosRepository.save(objOpcoesVotos));
     }
 
 }
