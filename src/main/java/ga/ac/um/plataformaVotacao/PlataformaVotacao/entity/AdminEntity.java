@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "admin_entity")
+@Table(name = "admin_TABLE")
 public class AdminEntity extends UsuarioModel {
 
     @NotBlank

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 
@@ -14,8 +15,8 @@ import java.util.List;
 @Setter
 @Entity
 @NoArgsConstructor
-@Table(name = "curso_estudante")
-public class CursoEntity {
+@Table(name = "curso_TABLE")
+public class CursoEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -36,12 +37,12 @@ public class CursoEntity {
     @Column(name = "data_insercao")
     private Integer anoAtual;
 
-    @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "curso_id", referencedColumnName = "id")
     private List<EstudanteEntity> estudanteEntities;
 
     @PrePersist
     private void prePresist() {
         this.anoAtual = Calendar.getInstance().get(Calendar.YEAR);
     }
-
 }

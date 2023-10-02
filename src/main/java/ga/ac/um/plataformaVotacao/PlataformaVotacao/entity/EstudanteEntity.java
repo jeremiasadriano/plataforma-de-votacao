@@ -12,19 +12,15 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "estudante_entity")
+@Table(name = "estudante_TABLE")
 public class EstudanteEntity extends UsuarioModel {
-
-    @Column(name = "curso_estudante_fk")
-    private Long curso_fk;
-
     @Column(name = "role")
     private String role;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "curso_fk")
-    private CursoEntity curso;
+    @Column(name = "curso_id")
+    private Long cursoId;
 
-    @OneToMany(mappedBy = "estudante", cascade = CascadeType.ALL)
-    private List<VotoEntity> votoEntity;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "estudante_id", referencedColumnName = "id")
+    private List<VotoEntity> votoEntities;
 }
