@@ -24,8 +24,4 @@ public class EstudanteEntity extends UsuarioModel {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "estudante_criador_votoFk", referencedColumnName = "id")
     private List<VotoEntity> votoEntity;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "criador_voto_fk", referencedColumnName = "id")
-    private List<VotoEntity> criarVotoEntity;
 }

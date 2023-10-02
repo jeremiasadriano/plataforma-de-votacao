@@ -35,6 +35,9 @@ public class VotoServiceImpl implements VotoService {
         OpcoesVotacao opcoesVotacao = new OpcoesVotacao();
         long voto = objOptionalOpcoesVotacao.get().getVoteCount();
 
+        if (voto < -1) {
+            voto = 0;
+        }
         voto++;
         opcoesVotacao.setIdEstudanteVoto(idEstudante);
         opcoesVotacao.setVoteCount(voto);
