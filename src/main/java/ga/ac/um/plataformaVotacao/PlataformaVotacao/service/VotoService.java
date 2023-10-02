@@ -6,4 +6,5 @@ import org.springframework.http.ResponseEntity;
 public interface VotoService {
     ResponseEntity<?> criarVotacao(VotoEntity dadosVotoEntity);
 
+    ResponseEntity<?> votar(Long idOpcoes, Long idEstudante);
 }

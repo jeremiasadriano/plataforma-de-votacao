@@ -22,6 +22,9 @@ public class OpcoesVotos {
     @Column(name = "voto_contador")
     private Long votoContador;
 
+    @Column(name = "estudante_id")
+    private Long estudante_id;
+
     @PrePersist
     private void prePresist() {
         this.votoContador = (long) 0;
