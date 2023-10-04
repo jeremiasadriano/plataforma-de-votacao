@@ -7,4 +7,7 @@ public interface VotoService {
     ResponseEntity<?> criarVotacao(VotoEntity dadosVotoEntity);
 
     ResponseEntity<?> votar(Long idOpcoes, Long idEstudante);
+
+    ResponseEntity<?> listarOpcoesVoto();
+
 }

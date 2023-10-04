@@ -24,4 +24,9 @@ public class VotoController {
     public ResponseEntity<?> votar(@RequestBody @PathVariable("idp") Long idOpcoes, @PathVariable("ide") Long idEstudante) {
         return this.objVotoService.votar(idOpcoes, idEstudante);
     }
+
+    @GetMapping("/estudante/votar")
+    public ResponseEntity<?> listarOpcoesVoto() {
+        return this.objVotoService.listarOpcoesVoto();
+    }
 }

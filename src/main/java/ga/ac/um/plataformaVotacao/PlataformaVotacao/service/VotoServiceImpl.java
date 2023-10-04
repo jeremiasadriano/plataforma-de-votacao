@@ -11,6 +11,7 @@ import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.VotoRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -48,8 +49,13 @@ public class VotoServiceImpl implements VotoService {
         countVotos.setIdEstudante(estudanteEntityOptional.get().getId());
 
 
-
-        this.objCountVotosRepository.count();
         return ResponseEntity.ok(this.objCountVotosRepository.save(countVotos));
+    }
+
+    @Override
+    public ResponseEntity<?> listarOpcoesVoto() {
+        List<OpcoesVotos> opcoesVotosList = this.objOpcoesVotosRepository.findAll();
+        if (opcoesVotosList.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(opcoesVotosList);
     }
 }
