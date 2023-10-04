@@ -29,4 +29,9 @@ public class VotoController {
     public ResponseEntity<?> listarOpcoesVoto() {
         return this.objVotoService.listarOpcoesVoto();
     }
+
+    @GetMapping("/estudante/votos/{idOpcao}")
+    public ResponseEntity<?> contarVotos(@PathVariable("idOpcao") Long idOpcao) {
+        return this.objVotoService.contarVotos(idOpcao);
+    }
 }

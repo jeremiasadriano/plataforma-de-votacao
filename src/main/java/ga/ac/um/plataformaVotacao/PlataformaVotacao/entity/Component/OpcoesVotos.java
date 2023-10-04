@@ -28,4 +28,8 @@ public class OpcoesVotos {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_opcao", referencedColumnName = "id")
     private List<CountVotos> countVotos = new ArrayList<>();
+
+    public int getCountVotos() {
+        return countVotos.size();
+    }
 }

@@ -48,7 +48,6 @@ public class VotoServiceImpl implements VotoService {
         countVotos.setIdOpcao(opcoesVotosOptional.get().getId());
         countVotos.setIdEstudante(estudanteEntityOptional.get().getId());
 
-
         return ResponseEntity.ok(this.objCountVotosRepository.save(countVotos));
     }
 
@@ -57,5 +56,11 @@ public class VotoServiceImpl implements VotoService {
         List<OpcoesVotos> opcoesVotosList = this.objOpcoesVotosRepository.findAll();
         if (opcoesVotosList.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(opcoesVotosList);
+    }
+
+    @Override
+    public ResponseEntity<?> contarVotos(Long idOpcao) {
+        Optional<OpcoesVotos> opcoesVotosOptional = this.objOpcoesVotosRepository.findById(idOpcao);
+        return opcoesVotosOptional.map(e -> ResponseEntity.ok(e.getCountVotos())).orElseGet(() -> ResponseEntity.noContent().build());
     }
 }

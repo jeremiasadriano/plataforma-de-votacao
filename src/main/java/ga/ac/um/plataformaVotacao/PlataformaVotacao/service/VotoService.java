@@ -10,4 +10,6 @@ public interface VotoService {
 
     ResponseEntity<?> listarOpcoesVoto();
 
+    ResponseEntity<?> contarVotos(Long idOpcao);
+
 }
