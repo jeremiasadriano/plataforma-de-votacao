@@ -20,8 +20,8 @@ public class VotoController {
         return this.objVotoService.criarVotacao(dadosVotoEntity);
     }
 
-    @PutMapping("/estudante/votar/idp={idp}&ide={ide}")
+    @PostMapping("/estudante/votar/{idp}/{ide}")
     public ResponseEntity<?> votar(@RequestBody @PathVariable("idp") Long idOpcoes, @PathVariable("ide") Long idEstudante) {
-        return this.objVotoService.votar(idOpcoes,idEstudante);
+        return this.objVotoService.votar(idOpcoes, idEstudante);
     }
 }

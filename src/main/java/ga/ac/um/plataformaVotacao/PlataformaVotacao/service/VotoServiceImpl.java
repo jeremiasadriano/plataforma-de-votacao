@@ -1,7 +1,11 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.CountVotos;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.OpcoesVotos;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.VotoEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.CountVotosRepository;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.EstudanteRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.OpcoesVotosRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.VotoRepository;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +18,14 @@ public class VotoServiceImpl implements VotoService {
 
     private final VotoRepository objVotoRepository;
     private final OpcoesVotosRepository objOpcoesVotosRepository;
+    private final EstudanteRepository objEstudanteRepository;
+    private final CountVotosRepository objCountVotosRepository;
 
-    public VotoServiceImpl(VotoRepository objVotoRepository, OpcoesVotosRepository objOpcoesVotosRepository) {
+    public VotoServiceImpl(VotoRepository objVotoRepository, OpcoesVotosRepository objOpcoesVotosRepository, EstudanteRepository objEstudanteRepository, CountVotosRepository objCountVotosRepository) {
         this.objVotoRepository = objVotoRepository;
         this.objOpcoesVotosRepository = objOpcoesVotosRepository;
+        this.objEstudanteRepository = objEstudanteRepository;
+        this.objCountVotosRepository = objCountVotosRepository;
     }
 
     @Override
@@ -29,19 +37,19 @@ public class VotoServiceImpl implements VotoService {
 
     @Override
     public ResponseEntity<?> votar(Long idOpcoes, Long idEstudante) {
-        Optional<OpcoesVotos> optionalOpcoesVotos = this.objOpcoesVotosRepository.findById(idOpcoes);
-        if (optionalOpcoesVotos.isEmpty()) return ResponseEntity.notFound().build();
-        OpcoesVotos objOpcoesVotos = new OpcoesVotos();
+        Optional<OpcoesVotos> opcoesVotosOptional = this.objOpcoesVotosRepository.findById(idOpcoes);
+        Optional<EstudanteEntity> estudanteEntityOptional = this.objEstudanteRepository.findById(idEstudante);
 
-        objOpcoesVotos.setOpcoes(optionalOpcoesVotos.get().getOpcoes());
-        objOpcoesVotos.setEstudante_id(idEstudante);
-        objOpcoesVotos.setVoto_id(optionalOpcoesVotos.get().getVoto_id());
+        if (opcoesVotosOptional.isEmpty() || estudanteEntityOptional.isEmpty())
+            return ResponseEntity.badRequest().build();
 
-        Long valorVotosIncremento = optionalOpcoesVotos.get().getVotoContador();
-        valorVotosIncremento++;
-        objOpcoesVotos.setVotoContador(valorVotosIncremento);
+        CountVotos countVotos = new CountVotos();
+        countVotos.setIdOpcao(opcoesVotosOptional.get().getId());
+        countVotos.setIdEstudante(estudanteEntityOptional.get().getId());
 
-        return ResponseEntity.ok(this.objOpcoesVotosRepository.save(objOpcoesVotos));
+
+
+        this.objCountVotosRepository.count();
+        return ResponseEntity.ok(this.objCountVotosRepository.save(countVotos));
     }
-
 }

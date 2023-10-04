@@ -2,6 +2,7 @@ package ga.ac.um.plataformaVotacao.PlataformaVotacao.entity;
 
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.OpcoesVotos;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,6 +28,7 @@ public class VotoEntity {
     @Column(name = "estudante_id")
     private Long estudante_id;
 
+    @NotNull
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "voto_id", referencedColumnName = "id")
     private List<OpcoesVotos> opcoesVotos = new ArrayList<>();

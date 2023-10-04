@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -19,17 +22,10 @@ public class OpcoesVotos {
     @Column(name = "opcoes")
     private String opcoes;
 
-    @Column(name = "voto_contador")
-    private Long votoContador;
-
     @Column(name = "voto_id")
     private Long voto_id;
 
-    @Column(name = "estudante_id")
-    private Long estudante_id;
-
-    @PrePersist
-    private void prePresist() {
-        this.votoContador = Long.parseLong("0");
-    }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_opcao", referencedColumnName = "id")
+    private List<CountVotos> countVotos = new ArrayList<>();
 }
