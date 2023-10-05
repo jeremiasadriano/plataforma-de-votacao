@@ -1,10 +1,10 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.CountVotos;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.ContadorVotos;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.OpcoesVotos;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.VotoEntity;
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.CountVotosRepository;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.ContadorVotosRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.EstudanteRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.OpcoesVotosRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.VotoRepository;
@@ -22,13 +22,13 @@ public class VotoServiceImpl implements VotoService {
     private final VotoRepository votoRepository;
     private final OpcoesVotosRepository opcoesVotosRepository;
     private final EstudanteRepository estudanteRepository;
-    private final CountVotosRepository countVotosRepository;
+    private final ContadorVotosRepository contadorVotosRepository;
 
-    public VotoServiceImpl(VotoRepository votoRepository, OpcoesVotosRepository opcoesVotosRepository, EstudanteRepository estudanteRepository, CountVotosRepository countVotosRepository) {
+    public VotoServiceImpl(VotoRepository votoRepository, OpcoesVotosRepository opcoesVotosRepository, EstudanteRepository estudanteRepository, ContadorVotosRepository contadorVotosRepository) {
         this.votoRepository = votoRepository;
         this.opcoesVotosRepository = opcoesVotosRepository;
         this.estudanteRepository = estudanteRepository;
-        this.countVotosRepository = countVotosRepository;
+        this.contadorVotosRepository = contadorVotosRepository;
     }
 
     @Override
@@ -53,17 +53,17 @@ public class VotoServiceImpl implements VotoService {
 //        Validar se o estudante já votou ou não
         List<OpcoesVotos> listaOpcoesVotos = dadosVotosOptional.get().getOpcoesVotos();
         for (OpcoesVotos receberListaOpcoesVotos : listaOpcoesVotos) {
-            List<CountVotos> listarTodosCountVotos = receberListaOpcoesVotos.CountList();
-            for (CountVotos receberListaTodosCountVotos : listarTodosCountVotos) {
-                if (Objects.equals(receberListaTodosCountVotos.getIdEstudante(), idEstudante))
+            List<ContadorVotos> listarTodosContadorVotos = receberListaOpcoesVotos.contadorVotosList();
+            for (ContadorVotos receberListaTodosContadorVotos : listarTodosContadorVotos) {
+                if (Objects.equals(receberListaTodosContadorVotos.getIdEstudante(), idEstudante))
                     return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Um estudante não pode votar duas vezes");
             }
         }
 //        Adicionar os dados do voto ao contador
-        CountVotos countVotos = new CountVotos();
-        countVotos.setIdOpcao(opcoesVotosOptional.get().getId());
-        countVotos.setIdEstudante(estudanteEntityOptional.get().getId());
-        return ResponseEntity.ok(this.countVotosRepository.save(countVotos));
+        ContadorVotos contadorVotos = new ContadorVotos();
+        contadorVotos.setIdOpcao(opcoesVotosOptional.get().getId());
+        contadorVotos.setIdEstudante(estudanteEntityOptional.get().getId());
+        return ResponseEntity.ok(this.contadorVotosRepository.save(contadorVotos));
     }
 
     @Override
@@ -76,6 +76,6 @@ public class VotoServiceImpl implements VotoService {
     @Override
     public ResponseEntity<?> contarVotos(Long idOpcao) {
         Optional<OpcoesVotos> opcoesVotosOptional = this.opcoesVotosRepository.findById(idOpcao);
-        return opcoesVotosOptional.map(e -> ResponseEntity.ok(e.getCountVotos())).orElseGet(() -> ResponseEntity.noContent().build());
+        return opcoesVotosOptional.map(e -> ResponseEntity.ok(e.getContadorVotos())).orElseGet(() -> ResponseEntity.noContent().build());
     }
 }

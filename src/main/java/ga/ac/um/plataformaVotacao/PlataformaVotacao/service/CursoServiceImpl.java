@@ -12,26 +12,26 @@ import java.util.Optional;
 @Service
 public class CursoServiceImpl implements CursoService {
 
-    private final CursoRepository objCursoRepository;
+    private final CursoRepository cursoRepository;
 
-    public CursoServiceImpl(CursoRepository objCursoRepository) {
-        this.objCursoRepository = objCursoRepository;
+    public CursoServiceImpl(CursoRepository cursoRepository) {
+        this.cursoRepository = cursoRepository;
     }
 
     @Override
     public ResponseEntity<CursoEntity> criarCurso_E_Estudante(CursoEntity dadosEstudante) {
         if (dadosEstudante == null) return ResponseEntity.badRequest().build();
-        return ResponseEntity.ok().body(this.objCursoRepository.save(dadosEstudante));
+        return ResponseEntity.ok().body(this.cursoRepository.save(dadosEstudante));
     }
 
     @Override
     public ResponseEntity<List<CursoEntity>> listarCurso_E_Estudante() {
-        return ResponseEntity.ok(this.objCursoRepository.findAll());
+        return ResponseEntity.ok(this.cursoRepository.findAll());
     }
 
     @Override
     public ResponseEntity<List<EstudanteEntity>> listarEstudantesDoCurso(long idCurso) {
-        Optional<CursoEntity> cursoEntityDados = this.objCursoRepository.findById(idCurso);
+        Optional<CursoEntity> cursoEntityDados = this.cursoRepository.findById(idCurso);
         return cursoEntityDados.map(cursoEntity -> ResponseEntity.ok(cursoEntity.getEstudanteEntities())).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

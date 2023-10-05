@@ -10,21 +10,21 @@ import java.util.Optional;
 
 @Service
 public class AdminServiceImpl implements AdminService {
-    private final AdminRepository objAdminRepository;
+    private final AdminRepository adminRepository;
 
 
-    public AdminServiceImpl(AdminRepository objAdminRepository) {
-        this.objAdminRepository = objAdminRepository;
+    public AdminServiceImpl(AdminRepository adminRepository) {
+        this.adminRepository = adminRepository;
     }
 
     @Override
     public ResponseEntity<AdminEntity> criarConta(AdminEntity dadosAdmin) {
-        return ResponseEntity.accepted().body(this.objAdminRepository.save(dadosAdmin));
+        return ResponseEntity.accepted().body(this.adminRepository.save(dadosAdmin));
     }
 
     @Override
     public ResponseEntity<String> fazerLogin(String emailEntity, String senhaEntity) {
-        AdminEntity adminEntity = this.objAdminRepository.findByEmailAndSenha(emailEntity, senhaEntity);
+        AdminEntity adminEntity = this.adminRepository.findByEmailAndSenha(emailEntity, senhaEntity);
 
         if (adminEntity == null) return ResponseEntity.badRequest().body("Usuario não encontrado");
         else return ResponseEntity.ok().body("Hello Usuario");
@@ -32,14 +32,14 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public ResponseEntity<AdminEntity> verPerfil(Long id) throws Exception {
-        Optional<AdminEntity> adminEntityOptional = this.objAdminRepository.findById(id);
+        Optional<AdminEntity> adminEntityOptional = this.adminRepository.findById(id);
         if (adminEntityOptional.isEmpty()) throw new Exception("Dados nao encontrados");
         return ResponseEntity.ok(adminEntityOptional.get());
     }
 
     @Override
     public ResponseEntity<AdminEntity> editarPerfil(AdminEntity dadosAdmin, long id) throws Exception {
-        Optional<AdminEntity> adminEntityOptional = this.objAdminRepository.findById(id);
+        Optional<AdminEntity> adminEntityOptional = this.adminRepository.findById(id);
 
         if (adminEntityOptional.isEmpty()) throw new Exception("Usuario Vazio");
 
@@ -52,17 +52,17 @@ public class AdminServiceImpl implements AdminService {
         adminEntityOptional.get().setUsernameAdmin(dadosAdmin.getUsernameAdmin());
         adminEntityOptional.get().setCargoAdmin(dadosAdmin.getCargoAdmin());
 
-        return ResponseEntity.ok().body(this.objAdminRepository.save(adminEntityOptional.get()));
+        return ResponseEntity.ok().body(this.adminRepository.save(adminEntityOptional.get()));
     }
 
     @Override
     public ResponseEntity<?> apagarConta(long id) {
-        this.objAdminRepository.deleteById(id);
+        this.adminRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<List<AdminEntity>> listarAdmin() {
-        return ResponseEntity.ok().body(this.objAdminRepository.findAll());
+        return ResponseEntity.ok().body(this.adminRepository.findAll());
     }
 }

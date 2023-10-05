@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table(name = "Votos_Feitos_TABLE")
-public class CountVotos {
+public class ContadorVotos {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;

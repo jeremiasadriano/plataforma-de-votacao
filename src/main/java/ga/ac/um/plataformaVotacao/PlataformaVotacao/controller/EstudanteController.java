@@ -11,39 +11,39 @@ import java.util.List;
 @RestController
 @RequestMapping("/")
 public class EstudanteController {
-    private final EstudanteService objEstudanteService;
+    private final EstudanteService estudanteService;
 
-    public EstudanteController(EstudanteService objEstudanteService) {
-        this.objEstudanteService = objEstudanteService;
+    public EstudanteController(EstudanteService estudanteService) {
+        this.estudanteService = estudanteService;
     }
 
     @PostMapping("/registar/estudante")
     public ResponseEntity<?> criarConta(@Valid @RequestBody EstudanteEntity dadosEstudante) {
-        return this.objEstudanteService.criarConta(dadosEstudante);
+        return this.estudanteService.criarConta(dadosEstudante);
     }
 
     @GetMapping("/login/email={emailEstudante}&senha={senhaEstudante}")
     public ResponseEntity<EstudanteEntity> login(@Valid @RequestBody @PathVariable("emailEstudante") String emailEstudante, @PathVariable("senhaEstudante") String senhaEstudante) {
-        return this.objEstudanteService.login(emailEstudante, senhaEstudante);
+        return this.estudanteService.login(emailEstudante, senhaEstudante);
     }
 
     @GetMapping("/perfil/id={idEstudante}")
     public ResponseEntity<EstudanteEntity> verPerfil(@RequestBody @PathVariable("idEstudante") long idEstudante) throws Exception {
-        return this.objEstudanteService.verPerfil(idEstudante);
+        return this.estudanteService.verPerfil(idEstudante);
     }
 
     @PutMapping("/perfil/id={idEstudante}")
     public ResponseEntity<String> editarPerfil(@PathVariable("idEstudante") long idEstudante, EstudanteEntity dadosEstudante) throws Exception {
-        return this.objEstudanteService.editarPerfil(idEstudante, dadosEstudante);
+        return this.estudanteService.editarPerfil(idEstudante, dadosEstudante);
     }
 
     @DeleteMapping("/perfil/id={idEstudante}")
     public ResponseEntity<?> apagarConta(@PathVariable("idEstudante") long idEstudante) {
-        return this.objEstudanteService.apagarConta(idEstudante);
+        return this.estudanteService.apagarConta(idEstudante);
     }
 
     @GetMapping("/listarEstudantes")
     public ResponseEntity<List<EstudanteEntity>> verEstudantes() {
-        return this.objEstudanteService.verEstudantes();
+        return this.estudanteService.verEstudantes();
     }
 }

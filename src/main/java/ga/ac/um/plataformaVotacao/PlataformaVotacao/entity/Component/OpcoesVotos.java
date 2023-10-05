@@ -29,14 +29,14 @@ public class OpcoesVotos {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_opcao", referencedColumnName = "id")
-    private List<CountVotos> countVotos = new ArrayList<>();
+    private List<ContadorVotos> contadorVotos = new ArrayList<>();
 
-    public int getCountVotos() {
-        return countVotos.size();
+    public int getContadorVotos() {
+        return contadorVotos.size();
     }
 
-    public List<CountVotos> CountList() {
-        return countVotos;
+    public List<ContadorVotos> contadorVotosList() {
+        return contadorVotos;
     }
 
     @Override

@@ -11,40 +11,40 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
-    private final AdminService objAdminService;
+    private final AdminService adminService;
 
-    public AdminController(AdminService objAdminService) {
-        this.objAdminService = objAdminService;
+    public AdminController(AdminService adminService) {
+        this.adminService = adminService;
     }
 
     @PostMapping("/registarAdmin")
     public ResponseEntity<AdminEntity> criarConta(@Valid @RequestBody AdminEntity dadosAdmin) {
-        return this.objAdminService.criarConta(dadosAdmin);
+        return this.adminService.criarConta(dadosAdmin);
     }
 
     @GetMapping("/login/emailAdmin={emailEntity}&senha={senhaEntity}")
     public ResponseEntity<String> fazerLogin(@Valid @PathVariable("emailEntity") String emailEntity, @PathVariable("senhaEntity") String senhaEntity) {
-        return this.objAdminService.fazerLogin(emailEntity, senhaEntity);
+        return this.adminService.fazerLogin(emailEntity, senhaEntity);
     }
 
     @GetMapping("/perfil/adminID={id}")
     public ResponseEntity<AdminEntity> verPerfil(@RequestBody @PathVariable("id") long id) throws Exception {
-        return this.objAdminService.verPerfil(id);
+        return this.adminService.verPerfil(id);
     }
 
     @PutMapping("/perfil/adminID={id}")
     public ResponseEntity<AdminEntity> editarPerfil(@Valid @RequestBody AdminEntity dadosAdmin, @PathVariable("id") long id) throws Exception {
-        return this.objAdminService.editarPerfil(dadosAdmin, id);
+        return this.adminService.editarPerfil(dadosAdmin, id);
     }
 
     @DeleteMapping("/perfil/adminID={id}")
     public ResponseEntity<?> apagarConta(@PathVariable("id") long id) {
-        return this.objAdminService.apagarConta(id);
+        return this.adminService.apagarConta(id);
     }
 
     @GetMapping("/perfil/admins")
     public ResponseEntity<List<AdminEntity>> listarAdmin() {
-        return this.objAdminService.listarAdmin();
+        return this.adminService.listarAdmin();
     }
 
 }

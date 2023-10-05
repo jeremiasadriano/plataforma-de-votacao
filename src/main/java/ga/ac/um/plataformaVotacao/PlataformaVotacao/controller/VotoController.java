@@ -9,29 +9,29 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class VotoController {
 
-    private VotoService objVotoService;
+    private VotoService votoService;
 
-    public VotoController(VotoService objVotoService) {
-        this.objVotoService = objVotoService;
+    public VotoController(VotoService votoService) {
+        this.votoService = votoService;
     }
 
     @PostMapping("/estudante/criar-votacao")
     public ResponseEntity<?> criarVotacao(@RequestBody VotoEntity dadosVotoEntity) {
-        return this.objVotoService.criarVotacao(dadosVotoEntity);
+        return this.votoService.criarVotacao(dadosVotoEntity);
     }
 
     @PostMapping("/estudante/votar/{idp}/{ide}")
     public ResponseEntity<?> votar(@RequestBody @PathVariable("idp") Long idOpcoes, @PathVariable("ide") Long idEstudante) {
-        return this.objVotoService.votar(idOpcoes, idEstudante);
+        return this.votoService.votar(idOpcoes, idEstudante);
     }
 
     @GetMapping("/estudante/votar")
     public ResponseEntity<?> listarOpcoesVoto() {
-        return this.objVotoService.listarOpcoesVoto();
+        return this.votoService.listarOpcoesVoto();
     }
 
     @GetMapping("/estudante/votos/{idOpcao}")
     public ResponseEntity<?> contarVotos(@PathVariable("idOpcao") Long idOpcao) {
-        return this.objVotoService.contarVotos(idOpcao);
+        return this.votoService.contarVotos(idOpcao);
     }
 }

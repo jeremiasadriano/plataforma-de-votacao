@@ -12,24 +12,24 @@ import java.util.List;
 @RestController
 @RequestMapping("/")
 public class CursoController {
-    private final CursoService objCursoService;
+    private final CursoService cursoService;
 
-    public CursoController(CursoService objCursoService) {
-        this.objCursoService = objCursoService;
+    public CursoController(CursoService cursoService) {
+        this.cursoService = cursoService;
     }
 
     @PostMapping("/registar")
     public ResponseEntity<CursoEntity> criarCurso_E_Estudante(@Valid @RequestBody CursoEntity dadosEstudante) {
-        return this.objCursoService.criarCurso_E_Estudante(dadosEstudante);
+        return this.cursoService.criarCurso_E_Estudante(dadosEstudante);
     }
 
     @GetMapping("/listarCurso")
     public ResponseEntity<List<CursoEntity>> listarCurso_E_Estudante() {
-        return this.objCursoService.listarCurso_E_Estudante();
+        return this.cursoService.listarCurso_E_Estudante();
     }
 
     @GetMapping("/curso/id={idCurso}")
     public ResponseEntity<List<EstudanteEntity>> listarEstudantesDoCurso(@PathVariable("idCurso") long idCurso) {
-        return this.objCursoService.listarEstudantesDoCurso(idCurso);
+        return this.cursoService.listarEstudantesDoCurso(idCurso);
     }
 }
