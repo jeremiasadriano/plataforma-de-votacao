@@ -18,9 +18,9 @@ public class ContadorVotos {
 
     @NotNull
     @Column(name = "id_opcao")
-    private Long idOpcao;
+    private Long opcoesId;
 
     @NotNull
     @Column(name = "id_Estudante", unique = true)
-    private Long idEstudante;
+    private Long estudanteId;
 }

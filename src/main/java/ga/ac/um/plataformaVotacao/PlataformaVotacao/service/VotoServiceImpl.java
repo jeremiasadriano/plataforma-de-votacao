@@ -55,14 +55,14 @@ public class VotoServiceImpl implements VotoService {
         for (OpcoesVotos receberListaOpcoesVotos : listaOpcoesVotos) {
             List<ContadorVotos> listarTodosContadorVotos = receberListaOpcoesVotos.contadorVotosList();
             for (ContadorVotos receberListaTodosContadorVotos : listarTodosContadorVotos) {
-                if (Objects.equals(receberListaTodosContadorVotos.getIdEstudante(), idEstudante))
+                if (Objects.equals(receberListaTodosContadorVotos.getEstudanteId(), idEstudante))
                     return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Um estudante não pode votar duas vezes");
             }
         }
 //        Adicionar os dados do voto ao contador
         ContadorVotos contadorVotos = new ContadorVotos();
-        contadorVotos.setIdOpcao(opcoesVotosOptional.get().getId());
-        contadorVotos.setIdEstudante(estudanteEntityOptional.get().getId());
+        contadorVotos.setOpcoesId(opcoesVotosOptional.get().getId());
+        contadorVotos.setEstudanteId(estudanteEntityOptional.get().getId());
         return ResponseEntity.ok(this.contadorVotosRepository.save(contadorVotos));
     }
 
