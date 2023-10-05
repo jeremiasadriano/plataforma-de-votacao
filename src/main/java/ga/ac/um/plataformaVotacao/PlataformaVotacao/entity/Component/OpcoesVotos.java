@@ -25,7 +25,7 @@ public class OpcoesVotos {
     @Column(name = "voto_id")
     private Long votoId;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id_opcao", referencedColumnName = "id")
     private List<ContadorVotos> contadorVotos = new ArrayList<>();
 

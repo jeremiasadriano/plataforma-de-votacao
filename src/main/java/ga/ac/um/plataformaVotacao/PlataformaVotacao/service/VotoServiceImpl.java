@@ -39,9 +39,9 @@ public class VotoServiceImpl implements VotoService {
     }
 
     @Override
-    public ResponseEntity<?> votar(Long idOpcoes, Long idEstudante) {
-        Optional<OpcoesVotos> opcoesVotosOptional = this.opcoesVotosRepository.findById(idOpcoes);
-        Optional<EstudanteEntity> estudanteEntityOptional = this.estudanteRepository.findById(idEstudante);
+    public ResponseEntity<?> votar(Long opcoesId, Long estudanteId) {
+        Optional<OpcoesVotos> opcoesVotosOptional = this.opcoesVotosRepository.findById(opcoesId);
+        Optional<EstudanteEntity> estudanteEntityOptional = this.estudanteRepository.findById(estudanteId);
         if (opcoesVotosOptional.isEmpty() || estudanteEntityOptional.isEmpty())
             return ResponseEntity.badRequest().build();
 
@@ -55,7 +55,7 @@ public class VotoServiceImpl implements VotoService {
         for (OpcoesVotos receberListaOpcoesVotos : listaOpcoesVotos) {
             List<ContadorVotos> listarTodosContadorVotos = receberListaOpcoesVotos.contadorVotosList();
             for (ContadorVotos receberListaTodosContadorVotos : listarTodosContadorVotos) {
-                if (Objects.equals(receberListaTodosContadorVotos.getEstudanteId(), idEstudante))
+                if (Objects.equals(receberListaTodosContadorVotos.getEstudanteId(), estudanteId))
                     return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Um estudante não pode votar duas vezes");
             }
         }
@@ -64,6 +64,19 @@ public class VotoServiceImpl implements VotoService {
         contadorVotos.setOpcoesId(opcoesVotosOptional.get().getId());
         contadorVotos.setEstudanteId(estudanteEntityOptional.get().getId());
         return ResponseEntity.ok(this.contadorVotosRepository.save(contadorVotos));
+    }
+
+    @Override
+    public ResponseEntity<?> removerVoto(Long opcoesId, Long estudanteId) {
+        Optional<OpcoesVotos> opcoesVotosOptional = this.opcoesVotosRepository.findById(opcoesId);
+        Optional<EstudanteEntity> estudanteEntityOptional = this.estudanteRepository.findById(estudanteId);
+        if (opcoesVotosOptional.isEmpty() || estudanteEntityOptional.isEmpty())
+            return ResponseEntity.badRequest().build();
+
+        Long opcoesVotoId = opcoesVotosOptional.get().getId();
+        Long estudanteVotoId = estudanteEntityOptional.get().getId();
+        this.contadorVotosRepository.deleteContadorVotosByOpcoesIdAndEstudanteId(opcoesVotoId, estudanteVotoId);
+        return ResponseEntity.ok().build();
     }
 
     @Override

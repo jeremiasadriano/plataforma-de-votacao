@@ -33,7 +33,7 @@ public class EstudanteController {
     }
 
     @PutMapping("/perfil/id={idEstudante}")
-    public ResponseEntity<String> editarPerfil(@PathVariable("idEstudante") long idEstudante, EstudanteEntity dadosEstudante) throws Exception {
+    public ResponseEntity<String> editarPerfil(@Valid @PathVariable("idEstudante") long idEstudante, EstudanteEntity dadosEstudante) throws Exception {
         return this.estudanteService.editarPerfil(idEstudante, dadosEstudante);
     }
 

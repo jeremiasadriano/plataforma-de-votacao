@@ -6,10 +6,12 @@ import org.springframework.http.ResponseEntity;
 public interface VotoService {
     ResponseEntity<?> criarVotacao(VotoEntity dadosVotoEntity);
 
-    ResponseEntity<?> votar(Long idOpcoes, Long idEstudante);
+    ResponseEntity<?> votar(Long opcoesId, Long estudanteId);
+
+    ResponseEntity<?> removerVoto(Long opcoesId, Long estudanteId);
 
     ResponseEntity<?> listarOpcoesVoto();
 
-    ResponseEntity<?> contarVotos(Long idOpcao);
+    ResponseEntity<?> contarVotos(Long opcoesId);
 
 }

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ContadorVotosRepository extends JpaRepository<ContadorVotos, Long> {
-    ContadorVotos countByIdOpcao(Long idOpcao);
+    void deleteContadorVotosByOpcoesIdAndEstudanteId(Long opcoesId, Long estudanteId);
 }

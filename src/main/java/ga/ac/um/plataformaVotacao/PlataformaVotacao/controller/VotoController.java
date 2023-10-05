@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/")
 public class VotoController {
 
-    private VotoService votoService;
+    private final VotoService votoService;
 
     public VotoController(VotoService votoService) {
         this.votoService = votoService;
@@ -21,8 +21,13 @@ public class VotoController {
     }
 
     @PostMapping("/estudante/votar/{idp}/{ide}")
-    public ResponseEntity<?> votar(@RequestBody @PathVariable("idp") Long idOpcoes, @PathVariable("ide") Long idEstudante) {
-        return this.votoService.votar(idOpcoes, idEstudante);
+    public ResponseEntity<?> votar(@RequestBody @PathVariable("idp") Long opcoesId, @PathVariable("ide") Long estudanteId) {
+        return this.votoService.votar(opcoesId, estudanteId);
+    }
+
+    @DeleteMapping("/estudante/removerVoto/{idp}/{ide}")
+    public ResponseEntity<?> removerVoto(@RequestBody @PathVariable("idp") Long opcoesId, @PathVariable("ide") Long estudanteId) {
+        return this.votoService.removerVoto(opcoesId,estudanteId);
     }
 
     @GetMapping("/estudante/votar")

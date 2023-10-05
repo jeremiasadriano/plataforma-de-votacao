@@ -26,6 +26,7 @@ public class EstudanteEntity extends UsuarioModel {
     @Column(name = "turno_estudante")
     private String turnoEstudante;
 
+    @NotNull
     @Column(name = "curso_id")
     private Long cursoId;
 
