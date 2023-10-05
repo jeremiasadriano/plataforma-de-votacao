@@ -19,35 +19,35 @@ import java.util.Optional;
 @Service
 public class VotoServiceImpl implements VotoService {
 
-    private final VotoRepository objVotoRepository;
-    private final OpcoesVotosRepository objOpcoesVotosRepository;
-    private final EstudanteRepository objEstudanteRepository;
-    private final CountVotosRepository objCountVotosRepository;
+    private final VotoRepository votoRepository;
+    private final OpcoesVotosRepository opcoesVotosRepository;
+    private final EstudanteRepository estudanteRepository;
+    private final CountVotosRepository countVotosRepository;
 
-    public VotoServiceImpl(VotoRepository objVotoRepository, OpcoesVotosRepository objOpcoesVotosRepository, EstudanteRepository objEstudanteRepository, CountVotosRepository objCountVotosRepository) {
-        this.objVotoRepository = objVotoRepository;
-        this.objOpcoesVotosRepository = objOpcoesVotosRepository;
-        this.objEstudanteRepository = objEstudanteRepository;
-        this.objCountVotosRepository = objCountVotosRepository;
+    public VotoServiceImpl(VotoRepository votoRepository, OpcoesVotosRepository opcoesVotosRepository, EstudanteRepository estudanteRepository, CountVotosRepository countVotosRepository) {
+        this.votoRepository = votoRepository;
+        this.opcoesVotosRepository = opcoesVotosRepository;
+        this.estudanteRepository = estudanteRepository;
+        this.countVotosRepository = countVotosRepository;
     }
 
     @Override
     public ResponseEntity<?> criarVotacao(VotoEntity dadosVotoEntity) {
         if (dadosVotoEntity == null)
             return ResponseEntity.badRequest().body("Erro: Não foi possível iniciar a votação,dados inválidos!");
-        return ResponseEntity.ok(this.objVotoRepository.save(dadosVotoEntity));
+        return ResponseEntity.ok(this.votoRepository.save(dadosVotoEntity));
     }
 
     @Override
     public ResponseEntity<?> votar(Long idOpcoes, Long idEstudante) {
-        Optional<OpcoesVotos> opcoesVotosOptional = this.objOpcoesVotosRepository.findById(idOpcoes);
-        Optional<EstudanteEntity> estudanteEntityOptional = this.objEstudanteRepository.findById(idEstudante);
+        Optional<OpcoesVotos> opcoesVotosOptional = this.opcoesVotosRepository.findById(idOpcoes);
+        Optional<EstudanteEntity> estudanteEntityOptional = this.estudanteRepository.findById(idEstudante);
         if (opcoesVotosOptional.isEmpty() || estudanteEntityOptional.isEmpty())
             return ResponseEntity.badRequest().build();
 
 //        Receber o id do voto a partir das suas opções
         long votoId = opcoesVotosOptional.get().getVotoId();
-        Optional<VotoEntity> dadosVotosOptional = this.objVotoRepository.findById(votoId);
+        Optional<VotoEntity> dadosVotosOptional = this.votoRepository.findById(votoId);
         if (dadosVotosOptional.isEmpty()) return ResponseEntity.badRequest().build();
 
 //        Validar se o estudante já votou ou não
@@ -63,19 +63,19 @@ public class VotoServiceImpl implements VotoService {
         CountVotos countVotos = new CountVotos();
         countVotos.setIdOpcao(opcoesVotosOptional.get().getId());
         countVotos.setIdEstudante(estudanteEntityOptional.get().getId());
-        return ResponseEntity.ok(this.objCountVotosRepository.save(countVotos));
+        return ResponseEntity.ok(this.countVotosRepository.save(countVotos));
     }
 
     @Override
     public ResponseEntity<?> listarOpcoesVoto() {
-        List<OpcoesVotos> listaOpcoesVotos = this.objOpcoesVotosRepository.findAll();
+        List<OpcoesVotos> listaOpcoesVotos = this.opcoesVotosRepository.findAll();
         if (listaOpcoesVotos.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(listaOpcoesVotos);
     }
 
     @Override
     public ResponseEntity<?> contarVotos(Long idOpcao) {
-        Optional<OpcoesVotos> opcoesVotosOptional = this.objOpcoesVotosRepository.findById(idOpcao);
+        Optional<OpcoesVotos> opcoesVotosOptional = this.opcoesVotosRepository.findById(idOpcao);
         return opcoesVotosOptional.map(e -> ResponseEntity.ok(e.getCountVotos())).orElseGet(() -> ResponseEntity.noContent().build());
     }
 }
