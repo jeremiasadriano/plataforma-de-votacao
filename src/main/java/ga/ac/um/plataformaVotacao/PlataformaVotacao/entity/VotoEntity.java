@@ -26,7 +26,7 @@ public class VotoEntity {
     private Boolean estadoVotacao;
 
     @Column(name = "estudante_id")
-    private Long estudante_id;
+    private Long estudanteId;
 
     @NotNull
     @OneToMany(cascade = CascadeType.ALL)
