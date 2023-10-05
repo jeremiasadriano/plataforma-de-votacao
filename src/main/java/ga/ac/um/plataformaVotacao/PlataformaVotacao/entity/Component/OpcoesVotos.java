@@ -25,7 +25,7 @@ public class OpcoesVotos {
     private String opcoes;
 
     @Column(name = "voto_id")
-    private Long voto_id;
+    private Long votoId;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_opcao", referencedColumnName = "id")
@@ -33,6 +33,10 @@ public class OpcoesVotos {
 
     public int getCountVotos() {
         return countVotos.size();
+    }
+
+    public List<CountVotos> CountList() {
+        return countVotos;
     }
 
     @Override

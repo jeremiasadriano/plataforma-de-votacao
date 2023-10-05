@@ -8,10 +8,12 @@ import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.CountVotosReposit
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.EstudanteRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.OpcoesVotosRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.VotoRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -40,22 +42,35 @@ public class VotoServiceImpl implements VotoService {
     public ResponseEntity<?> votar(Long idOpcoes, Long idEstudante) {
         Optional<OpcoesVotos> opcoesVotosOptional = this.objOpcoesVotosRepository.findById(idOpcoes);
         Optional<EstudanteEntity> estudanteEntityOptional = this.objEstudanteRepository.findById(idEstudante);
-
         if (opcoesVotosOptional.isEmpty() || estudanteEntityOptional.isEmpty())
             return ResponseEntity.badRequest().build();
 
+//        Receber o id do voto a partir das suas opções
+        long votoId = opcoesVotosOptional.get().getVotoId();
+        Optional<VotoEntity> dadosVotosOptional = this.objVotoRepository.findById(votoId);
+        if (dadosVotosOptional.isEmpty()) return ResponseEntity.badRequest().build();
+
+//        Validar se o estudante já votou ou não
+        List<OpcoesVotos> listaOpcoesVotos = dadosVotosOptional.get().getOpcoesVotos();
+        for (OpcoesVotos receberListaOpcoesVotos : listaOpcoesVotos) {
+            List<CountVotos> listarTodosCountVotos = receberListaOpcoesVotos.CountList();
+            for (CountVotos receberListaTodosCountVotos : listarTodosCountVotos) {
+                if (Objects.equals(receberListaTodosCountVotos.getIdEstudante(), idEstudante))
+                    return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Um estudante não pode votar duas vezes");
+            }
+        }
+//        Adicionar os dados do voto ao contador
         CountVotos countVotos = new CountVotos();
         countVotos.setIdOpcao(opcoesVotosOptional.get().getId());
         countVotos.setIdEstudante(estudanteEntityOptional.get().getId());
-
         return ResponseEntity.ok(this.objCountVotosRepository.save(countVotos));
     }
 
     @Override
     public ResponseEntity<?> listarOpcoesVoto() {
-        List<OpcoesVotos> opcoesVotosList = this.objOpcoesVotosRepository.findAll();
-        if (opcoesVotosList.isEmpty()) return ResponseEntity.noContent().build();
-        return ResponseEntity.ok(opcoesVotosList);
+        List<OpcoesVotos> listaOpcoesVotos = this.objOpcoesVotosRepository.findAll();
+        if (listaOpcoesVotos.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(listaOpcoesVotos);
     }
 
     @Override

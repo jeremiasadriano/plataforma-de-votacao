@@ -23,7 +23,7 @@ public class CursoEntity implements Serializable {
     private Long id;
 
     @NotBlank
-    @Column(name = "nome_curso")
+    @Column(name = "nome_curso", unique = true)
     private String nomeCurso;
 
     @Column(name = "data_insercao")

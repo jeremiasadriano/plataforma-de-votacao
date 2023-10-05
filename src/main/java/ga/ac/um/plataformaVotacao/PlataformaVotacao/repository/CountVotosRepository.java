@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CountVotosRepository extends JpaRepository<CountVotos, Long> {
-    long countById(Long id);
+    CountVotos countByIdOpcao(Long idOpcao);
 }
