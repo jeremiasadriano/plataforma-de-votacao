@@ -20,14 +20,14 @@ public class VotoController {
         return this.votoService.criarVotacao(dadosVotoEntity);
     }
 
-    @PostMapping("/estudante/votar/{idp}/{ide}")
-    public ResponseEntity<?> votar(@RequestBody @PathVariable("idp") Long opcoesId, @PathVariable("ide") Long estudanteId) {
+    @PostMapping("/estudante/votar/{idOpcao}/{idEstudante}")
+    public ResponseEntity<?> votar(@RequestBody @PathVariable("idOpcao") Long opcoesId, @PathVariable("idEstudante") Long estudanteId) {
         return this.votoService.votar(opcoesId, estudanteId);
     }
 
     @DeleteMapping("/estudante/removerVoto/{idp}/{ide}")
     public ResponseEntity<?> removerVoto(@RequestBody @PathVariable("idp") Long opcoesId, @PathVariable("ide") Long estudanteId) {
-        return this.votoService.removerVoto(opcoesId,estudanteId);
+        return this.votoService.removerVoto(opcoesId, estudanteId);
     }
 
     @GetMapping("/estudante/votar")

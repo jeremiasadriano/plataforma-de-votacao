@@ -21,6 +21,6 @@ public class ContadorVotos {
     private Long opcoesId;
 
     @NotNull
-    @Column(name = "id_Estudante", unique = true)
+    @Column(name = "id_Estudante")
     private Long estudanteId;
 }

@@ -35,6 +35,27 @@ public class VotoServiceImpl implements VotoService {
     public ResponseEntity<?> criarVotacao(VotoEntity dadosVotoEntity) {
         if (dadosVotoEntity == null)
             return ResponseEntity.badRequest().body("Erro: Não foi possível iniciar a votação,dados inválidos!");
+        List<VotoEntity> listaVotosEntity = this.votoRepository.findAll();
+
+//        Verificar se o título já existe ou não
+        String tituloVotacao = dadosVotoEntity.getTituloVotacao();
+        for (VotoEntity recberListaVotosEntity : listaVotosEntity) {
+            if (recberListaVotosEntity.getTituloVotacao().equals(tituloVotacao)) {
+                VotoEntity resultadoPeloTituloVoto = this.votoRepository.findByTituloVotacao(tituloVotacao);
+                Long idEstudante = resultadoPeloTituloVoto.getEstudanteId();
+
+                Optional<EstudanteEntity> buscarEstudantePeloId = this.estudanteRepository.findById(idEstudante);
+                if (buscarEstudantePeloId.isEmpty())
+                    return ResponseEntity.badRequest().body("Não estudantes não podem iniciar uma votação");
+                String nomeEstudante = buscarEstudantePeloId.get().getNome();
+
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Não é permitido criar-se uma votação com um título já existente, o estudante " + "'"+nomeEstudante +"'"+ " já abriu uma votação com o mesmo título.");
+            }
+        }
+//        Verificar se o estudante por criar a votação existe ou não
+        Long idEstudante = dadosVotoEntity.getEstudanteId();
+        Optional<EstudanteEntity> buscarEstudantePeloId = this.estudanteRepository.findById(idEstudante);
+        if (buscarEstudantePeloId.isEmpty()) return ResponseEntity.badRequest().body("Não estudantes não podem iniciar uma votação!");
         return ResponseEntity.ok(this.votoRepository.save(dadosVotoEntity));
     }
 
@@ -43,7 +64,7 @@ public class VotoServiceImpl implements VotoService {
         Optional<OpcoesVotos> opcoesVotosOptional = this.opcoesVotosRepository.findById(opcoesId);
         Optional<EstudanteEntity> estudanteEntityOptional = this.estudanteRepository.findById(estudanteId);
         if (opcoesVotosOptional.isEmpty() || estudanteEntityOptional.isEmpty())
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body("Erro! Opções inseridas são inválidas.");
 
 //        Receber o id do voto a partir das suas opções
         long votoId = opcoesVotosOptional.get().getVotoId();
