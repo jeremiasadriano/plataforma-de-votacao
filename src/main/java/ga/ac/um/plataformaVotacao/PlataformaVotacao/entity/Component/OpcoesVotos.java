@@ -27,13 +27,13 @@ public class OpcoesVotos {
 
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id_opcao", referencedColumnName = "id")
-    private List<ContadorVotos> contadorVotos = new ArrayList<>();
+    private List<ListaDosVotantes> listaDosVotantes = new ArrayList<>();
 
-    public int getContadorVotos() {
-        return contadorVotos.size();
+    public int getListaDosVotantes() {
+        return listaDosVotantes.size();
     }
 
-    public List<ContadorVotos> contadorVotosList() {
-        return contadorVotos;
+    public List<ListaDosVotantes> todosVotantes() {
+        return listaDosVotantes;
     }
 }

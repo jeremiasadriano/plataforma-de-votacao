@@ -1,10 +1,10 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.ContadorVotos;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.ListaDosVotantes;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.OpcoesVotos;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.VotoEntity;
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.ContadorVotosRepository;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.ListaDosVotatantesRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.EstudanteRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.OpcoesVotosRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.VotoRepository;
@@ -22,13 +22,13 @@ public class VotoServiceImpl implements VotoService {
     private final VotoRepository votoRepository;
     private final OpcoesVotosRepository opcoesVotosRepository;
     private final EstudanteRepository estudanteRepository;
-    private final ContadorVotosRepository contadorVotosRepository;
+    private final ListaDosVotatantesRepository listaDosVotatantesRepository;
 
-    public VotoServiceImpl(VotoRepository votoRepository, OpcoesVotosRepository opcoesVotosRepository, EstudanteRepository estudanteRepository, ContadorVotosRepository contadorVotosRepository) {
+    public VotoServiceImpl(VotoRepository votoRepository, OpcoesVotosRepository opcoesVotosRepository, EstudanteRepository estudanteRepository, ListaDosVotatantesRepository listaDosVotatantesRepository) {
         this.votoRepository = votoRepository;
         this.opcoesVotosRepository = opcoesVotosRepository;
         this.estudanteRepository = estudanteRepository;
-        this.contadorVotosRepository = contadorVotosRepository;
+        this.listaDosVotatantesRepository = listaDosVotatantesRepository;
     }
 
     @Override
@@ -49,13 +49,14 @@ public class VotoServiceImpl implements VotoService {
                     return ResponseEntity.badRequest().body("Não estudantes não podem iniciar uma votação");
                 String nomeEstudante = buscarEstudantePeloId.get().getNome();
 
-                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Não é permitido criar-se uma votação com um título já existente, o estudante " + "'"+nomeEstudante +"'"+ " já abriu uma votação com o mesmo título.");
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Não é permitido criar-se uma votação com um título já existente, o estudante " + "'" + nomeEstudante + "'" + " já abriu uma votação com o mesmo título.");
             }
         }
 //        Verificar se o estudante por criar a votação existe ou não
         Long idEstudante = dadosVotoEntity.getEstudanteId();
         Optional<EstudanteEntity> buscarEstudantePeloId = this.estudanteRepository.findById(idEstudante);
-        if (buscarEstudantePeloId.isEmpty()) return ResponseEntity.badRequest().body("Não estudantes não podem iniciar uma votação!");
+        if (buscarEstudantePeloId.isEmpty())
+            return ResponseEntity.badRequest().body("Não estudantes não podem iniciar uma votação!");
         return ResponseEntity.ok(this.votoRepository.save(dadosVotoEntity));
     }
 
@@ -74,31 +75,39 @@ public class VotoServiceImpl implements VotoService {
 //        Validar se o estudante já votou ou não
         List<OpcoesVotos> listaOpcoesVotos = dadosVotosOptional.get().getOpcoesVotos();
         for (OpcoesVotos receberListaOpcoesVotos : listaOpcoesVotos) {
-            List<ContadorVotos> listarTodosContadorVotos = receberListaOpcoesVotos.contadorVotosList();
-            for (ContadorVotos receberListaTodosContadorVotos : listarTodosContadorVotos) {
+            List<ListaDosVotantes> listarTodosContadorVotos = receberListaOpcoesVotos.todosVotantes();
+            for (ListaDosVotantes receberListaTodosContadorVotos : listarTodosContadorVotos) {
                 if (Objects.equals(receberListaTodosContadorVotos.getEstudanteId(), estudanteId))
                     return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Um estudante não pode votar duas vezes");
             }
         }
 //        Adicionar os dados do voto ao contador
-        ContadorVotos contadorVotos = new ContadorVotos();
+        ListaDosVotantes contadorVotos = new ListaDosVotantes();
         contadorVotos.setOpcoesId(opcoesVotosOptional.get().getId());
         contadorVotos.setEstudanteId(estudanteEntityOptional.get().getId());
-        return ResponseEntity.ok(this.contadorVotosRepository.save(contadorVotos));
+        return ResponseEntity.ok(this.listaDosVotatantesRepository.save(contadorVotos));
     }
 
     @Override
-    public ResponseEntity<?> removerVoto(Long opcoesId, Long estudanteId) {
+    public ResponseEntity<?> atualizarVoto(Long opcoesId, Long estudanteId) {
         Optional<OpcoesVotos> opcoesVotosOptional = this.opcoesVotosRepository.findById(opcoesId);
-        Optional<EstudanteEntity> estudanteEntityOptional = this.estudanteRepository.findById(estudanteId);
-        if (opcoesVotosOptional.isEmpty() || estudanteEntityOptional.isEmpty())
-            return ResponseEntity.badRequest().build();
+        if (opcoesVotosOptional.isEmpty()) return ResponseEntity.badRequest().build();
 
-        Long opcoesVotoId = opcoesVotosOptional.get().getId();
-        Long estudanteVotoId = estudanteEntityOptional.get().getId();
-        this.contadorVotosRepository.deleteContadorVotosByOpcoesIdAndEstudanteId(opcoesVotoId, estudanteVotoId);
+        List<ListaDosVotantes> listaDosVotantes = opcoesVotosOptional.get().todosVotantes();
+        for (ListaDosVotantes receberlistaDosVotantes : listaDosVotantes) {
+            Long idVotante = receberlistaDosVotantes.getEstudanteId();
+            Long idVoto = receberlistaDosVotantes.getId();
+
+            if (Objects.equals(idVotante, estudanteId)) {
+                this.listaDosVotatantesRepository.deleteById(idVoto);
+                return ResponseEntity.ok("Removido");
+            } else {
+                
+            }
+        }
         return ResponseEntity.ok().build();
     }
+
 
     @Override
     public ResponseEntity<?> listarOpcoesVoto() {
@@ -110,6 +119,6 @@ public class VotoServiceImpl implements VotoService {
     @Override
     public ResponseEntity<?> contarVotos(Long idOpcao) {
         Optional<OpcoesVotos> opcoesVotosOptional = this.opcoesVotosRepository.findById(idOpcao);
-        return opcoesVotosOptional.map(e -> ResponseEntity.ok(e.getContadorVotos())).orElseGet(() -> ResponseEntity.noContent().build());
+        return opcoesVotosOptional.map(e -> ResponseEntity.ok(e.getListaDosVotantes())).orElseGet(() -> ResponseEntity.noContent().build());
     }
 }

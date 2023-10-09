@@ -8,7 +8,8 @@ public interface VotoService {
 
     ResponseEntity<?> votar(Long opcoesId, Long estudanteId);
 
-    ResponseEntity<?> removerVoto(Long opcoesId, Long estudanteId);
+    ResponseEntity<?> atualizarVoto(Long opcoesId, Long estudanteId);
+
 
     ResponseEntity<?> listarOpcoesVoto();
 
