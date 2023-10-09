@@ -39,19 +39,21 @@ public class VotoServiceImpl implements VotoService {
 
 //        Verificar se o título já existe ou não
         String tituloVotacao = dadosVotoEntity.getTituloVotacao();
-        for (VotoEntity recberListaVotosEntity : listaVotosEntity) {
-            if (recberListaVotosEntity.getTituloVotacao().equals(tituloVotacao)) {
+        for (VotoEntity listaVotos : listaVotosEntity) {
+            if (listaVotos.getTituloVotacao().equals(tituloVotacao)) {
                 VotoEntity resultadoPeloTituloVoto = this.votoRepository.findByTituloVotacao(tituloVotacao);
                 Long idEstudante = resultadoPeloTituloVoto.getEstudanteId();
 
                 Optional<EstudanteEntity> buscarEstudantePeloId = this.estudanteRepository.findById(idEstudante);
-                if (buscarEstudantePeloId.isEmpty())
+                if (buscarEstudantePeloId.isEmpty()) {
                     return ResponseEntity.badRequest().body("Não estudantes não podem iniciar uma votação");
-                String nomeEstudante = buscarEstudantePeloId.get().getNome();
+                }
 
+                String nomeEstudante = buscarEstudantePeloId.get().getNome();
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Não é permitido criar-se uma votação com um título já existente, o estudante " + "'" + nomeEstudante + "'" + " já abriu uma votação com o mesmo título.");
             }
         }
+
 //        Verificar se o estudante por criar a votação existe ou não
         Long idEstudante = dadosVotoEntity.getEstudanteId();
         Optional<EstudanteEntity> buscarEstudantePeloId = this.estudanteRepository.findById(idEstudante);
@@ -125,15 +127,6 @@ public class VotoServiceImpl implements VotoService {
         if (opcoesVotosOptional.isEmpty()) return ResponseEntity.badRequest().build();
 
         List<ListaDosVotantes> listaDosVotantes = opcoesVotosOptional.get().todosVotantes();
-        for (ListaDosVotantes receberListaDosVotantes : listaDosVotantes) {
-            Long idEstudante = receberListaDosVotantes.getEstudanteId();
-
-            Optional<EstudanteEntity> estudantesVotantes = this.estudanteRepository.findById(idEstudante);
-            if (estudantesVotantes.isEmpty()) return ResponseEntity.notFound().build();
-
-            String nomeEstudante = estudantesVotantes.get().getNome();
-            return ResponseEntity.ok(nomeEstudante);
-        }
-        return ResponseEntity.notFound().build();
+        return null;
     }
 }
