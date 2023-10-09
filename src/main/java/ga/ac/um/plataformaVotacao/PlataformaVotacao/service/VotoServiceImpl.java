@@ -64,9 +64,13 @@ public class VotoServiceImpl implements VotoService {
     public ResponseEntity<?> votar(Long opcoesId, Long estudanteId) {
         Optional<OpcoesVotos> opcoesVotosOptional = this.opcoesVotosRepository.findById(opcoesId);
         Optional<EstudanteEntity> estudanteEntityOptional = this.estudanteRepository.findById(estudanteId);
-        if (opcoesVotosOptional.isEmpty() || estudanteEntityOptional.isEmpty())
+        if (opcoesVotosOptional.isEmpty() && estudanteEntityOptional.isEmpty()) {
             return ResponseEntity.badRequest().body("Erro! Opções inseridas são inválidas.");
-
+        } else if (opcoesVotosOptional.isEmpty()) {
+            return ResponseEntity.badRequest().body("Opção de voto inválida");
+        } else if (estudanteEntityOptional.isEmpty()) {
+            return ResponseEntity.badRequest().body("Estudante inválido");
+        }
 //        Receber o id do voto a partir das suas opções
         long votoId = opcoesVotosOptional.get().getVotoId();
         Optional<VotoEntity> dadosVotosOptional = this.votoRepository.findById(votoId);
@@ -77,7 +81,8 @@ public class VotoServiceImpl implements VotoService {
         for (OpcoesVotos receberListaOpcoesVotos : listaOpcoesVotos) {
             List<ListaDosVotantes> listarTodosContadorVotos = receberListaOpcoesVotos.todosVotantes();
             for (ListaDosVotantes receberListaTodosContadorVotos : listarTodosContadorVotos) {
-                if (Objects.equals(receberListaTodosContadorVotos.getEstudanteId(), estudanteId))
+                Long idVotante = receberListaTodosContadorVotos.getEstudanteId();
+                if (Objects.equals(idVotante, estudanteId))
                     return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Um estudante não pode votar duas vezes");
             }
         }
@@ -89,7 +94,7 @@ public class VotoServiceImpl implements VotoService {
     }
 
     @Override
-    public ResponseEntity<?> atualizarVoto(Long opcoesId, Long estudanteId) {
+    public ResponseEntity<?> removerVoto(Long opcoesId, Long estudanteId) {
         Optional<OpcoesVotos> opcoesVotosOptional = this.opcoesVotosRepository.findById(opcoesId);
         if (opcoesVotosOptional.isEmpty()) return ResponseEntity.badRequest().build();
 
@@ -100,12 +105,10 @@ public class VotoServiceImpl implements VotoService {
 
             if (Objects.equals(idVotante, estudanteId)) {
                 this.listaDosVotatantesRepository.deleteById(idVoto);
-                return ResponseEntity.ok("Removido");
-            } else {
-                
+                return ResponseEntity.ok("Voto removido com sucesso!");
             }
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.notFound().build();
     }
 
 
@@ -117,8 +120,20 @@ public class VotoServiceImpl implements VotoService {
     }
 
     @Override
-    public ResponseEntity<?> contarVotos(Long idOpcao) {
+    public ResponseEntity<?> listarNomesVotantes(Long idOpcao) {
         Optional<OpcoesVotos> opcoesVotosOptional = this.opcoesVotosRepository.findById(idOpcao);
-        return opcoesVotosOptional.map(e -> ResponseEntity.ok(e.getListaDosVotantes())).orElseGet(() -> ResponseEntity.noContent().build());
+        if (opcoesVotosOptional.isEmpty()) return ResponseEntity.badRequest().build();
+
+        List<ListaDosVotantes> listaDosVotantes = opcoesVotosOptional.get().todosVotantes();
+        for (ListaDosVotantes receberListaDosVotantes : listaDosVotantes) {
+            Long idEstudante = receberListaDosVotantes.getEstudanteId();
+
+            Optional<EstudanteEntity> estudantesVotantes = this.estudanteRepository.findById(idEstudante);
+            if (estudantesVotantes.isEmpty()) return ResponseEntity.notFound().build();
+
+            String nomeEstudante = estudantesVotantes.get().getNome();
+            return ResponseEntity.ok(nomeEstudante);
+        }
+        return ResponseEntity.notFound().build();
     }
 }

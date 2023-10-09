@@ -25,9 +25,9 @@ public class VotoController {
         return this.votoService.votar(opcoesId, estudanteId);
     }
 
-    @PutMapping("/estudante/atualizar/{idp}/{ide}")
-    public ResponseEntity<?> atualizarVoto(@RequestBody @PathVariable("idp") Long opcoesId, @PathVariable("ide") Long estudanteId) {
-        return this.votoService.atualizarVoto(opcoesId, estudanteId);
+    @DeleteMapping("/estudante/atualizar/{idp}/{ide}")
+    public ResponseEntity<?> removerVoto(@RequestBody @PathVariable("idp") Long opcoesId, @PathVariable("ide") Long estudanteId) {
+        return this.votoService.removerVoto(opcoesId, estudanteId);
     }
 
     @GetMapping("/estudante/votar")
@@ -35,8 +35,8 @@ public class VotoController {
         return this.votoService.listarOpcoesVoto();
     }
 
-    @GetMapping("/estudante/votos/{idOpcao}")
-    public ResponseEntity<?> contarVotos(@PathVariable("idOpcao") Long idOpcao) {
-        return this.votoService.contarVotos(idOpcao);
+    @GetMapping("/estudante/votos/{idp}")
+    public ResponseEntity<?> listarNomesVotantes(@RequestBody @PathVariable("idp") Long opcoesId) {
+        return this.votoService.listarNomesVotantes(opcoesId);
     }
 }
