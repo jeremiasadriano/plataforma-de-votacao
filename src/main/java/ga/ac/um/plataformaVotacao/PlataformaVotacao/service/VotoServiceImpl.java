@@ -4,14 +4,15 @@ import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.ListaDosVot
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.OpcoesVotos;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.VotoEntity;
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.ListaDosVotatantesRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.EstudanteRepository;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.ListaDosVotatantesRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.OpcoesVotosRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.VotoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -81,7 +82,7 @@ public class VotoServiceImpl implements VotoService {
 //        Validar se o estudante já votou ou não
         List<OpcoesVotos> listaOpcoesVotos = dadosVotosOptional.get().getOpcoesVotos();
         for (OpcoesVotos receberListaOpcoesVotos : listaOpcoesVotos) {
-            List<ListaDosVotantes> listarTodosContadorVotos = receberListaOpcoesVotos.todosVotantes();
+            List<ListaDosVotantes> listarTodosContadorVotos = receberListaOpcoesVotos.todosVotos();
             for (ListaDosVotantes receberListaTodosContadorVotos : listarTodosContadorVotos) {
                 Long idVotante = receberListaTodosContadorVotos.getEstudanteId();
                 if (Objects.equals(idVotante, estudanteId))
@@ -89,30 +90,30 @@ public class VotoServiceImpl implements VotoService {
             }
         }
 //        Adicionar os dados do voto ao contador
-        ListaDosVotantes contadorVotos = new ListaDosVotantes();
-        contadorVotos.setOpcoesId(opcoesVotosOptional.get().getId());
-        contadorVotos.setEstudanteId(estudanteEntityOptional.get().getId());
-        return ResponseEntity.ok(this.listaDosVotatantesRepository.save(contadorVotos));
+        ListaDosVotantes listaDosVotantes = new ListaDosVotantes();
+        listaDosVotantes.setOpcoesId(opcoesVotosOptional.get().getId());
+        listaDosVotantes.setEstudanteId(estudanteEntityOptional.get().getId());
+        return ResponseEntity.ok(this.listaDosVotatantesRepository.save(listaDosVotantes));
     }
 
     @Override
     public ResponseEntity<?> removerVoto(Long opcoesId, Long estudanteId) {
         Optional<OpcoesVotos> opcoesVotosOptional = this.opcoesVotosRepository.findById(opcoesId);
-        if (opcoesVotosOptional.isEmpty()) return ResponseEntity.badRequest().build();
+        Optional<EstudanteEntity> estudanteEntityOptional = this.estudanteRepository.findById(estudanteId);
+        if (opcoesVotosOptional.isEmpty() || estudanteEntityOptional.isEmpty())
+            return ResponseEntity.badRequest().build();
 
-        List<ListaDosVotantes> listaDosVotantes = opcoesVotosOptional.get().todosVotantes();
-        for (ListaDosVotantes receberlistaDosVotantes : listaDosVotantes) {
-            Long idVotante = receberlistaDosVotantes.getEstudanteId();
-            Long idVoto = receberlistaDosVotantes.getId();
-
-            if (Objects.equals(idVotante, estudanteId)) {
-                this.listaDosVotatantesRepository.deleteById(idVoto);
-                return ResponseEntity.ok("Voto removido com sucesso!");
+        List<ListaDosVotantes> listaDosVotantes = opcoesVotosOptional.get().todosVotos();
+        for (ListaDosVotantes votantes : listaDosVotantes) {
+            if (Objects.equals(votantes.getEstudanteId(), estudanteId)) {
+                this.listaDosVotatantesRepository.deleteById(votantes.getId());
+                return ResponseEntity.ok("Removido com sucesso!");
+            } else if (Objects.isNull(votantes.getEstudanteId())) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Voto não encontrado com sucesso!");
             }
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.badRequest().body("O servidor não conseguiu carregar a requisição!");
     }
-
 
     @Override
     public ResponseEntity<?> listarOpcoesVoto() {
@@ -126,7 +127,32 @@ public class VotoServiceImpl implements VotoService {
         Optional<OpcoesVotos> opcoesVotosOptional = this.opcoesVotosRepository.findById(idOpcao);
         if (opcoesVotosOptional.isEmpty()) return ResponseEntity.badRequest().build();
 
-        List<ListaDosVotantes> listaDosVotantes = opcoesVotosOptional.get().todosVotantes();
-        return null;
+        List<ListaDosVotantes> listaDosVotantes = opcoesVotosOptional.get().todosVotos();
+        ArrayList<String> nomesVotantes = new ArrayList<>();
+        for (ListaDosVotantes votantes : listaDosVotantes) {
+            Long ids = votantes.getEstudanteId();
+            Optional<EstudanteEntity> estudanteEntityOptional = this.estudanteRepository.findById(ids);
+            if (estudanteEntityOptional.isEmpty()) return ResponseEntity.badRequest().build();
+            nomesVotantes.add(estudanteEntityOptional.get().getNome());
+        }
+        return ResponseEntity.ok(nomesVotantes);
+    }
+
+    @Override
+    public ResponseEntity<?> removerVotacao(Long estudanteId, Long votoId) {
+        Optional<EstudanteEntity> estudanteEntityOptional = this.estudanteRepository.findById(estudanteId);
+        Optional<VotoEntity> votoEntityOptional = this.votoRepository.findById(votoId);
+        if (estudanteEntityOptional.isEmpty() || votoEntityOptional.isEmpty())
+            return ResponseEntity.badRequest().build();
+
+        List<VotoEntity> listaVotos = estudanteEntityOptional.get().getVotoEntities();
+        for (VotoEntity votos : listaVotos) {
+            if (Objects.equals(votos.getId(), votoId)) {
+                this.votoRepository.deleteById(votoId);
+                return ResponseEntity.ok("Voto Removido com sucesso!");
+            }
+        }
+        return ResponseEntity.badRequest().body("O servidor não conseguiu carregar a sua requisição!");
     }
 }
+

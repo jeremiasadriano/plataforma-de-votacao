@@ -15,4 +15,5 @@ public interface VotoService {
 
     ResponseEntity<?> listarNomesVotantes(Long opcoesId);
 
+    ResponseEntity<?> removerVotacao(Long estudanteId, Long votoId);
 }

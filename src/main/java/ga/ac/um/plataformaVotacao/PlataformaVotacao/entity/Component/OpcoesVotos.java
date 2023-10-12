@@ -25,7 +25,7 @@ public class OpcoesVotos {
     @Column(name = "voto_id")
     private Long votoId;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id_opcao", referencedColumnName = "id")
     private List<ListaDosVotantes> listaDosVotantes = new ArrayList<>();
 
@@ -33,7 +33,7 @@ public class OpcoesVotos {
         return listaDosVotantes.size();
     }
 
-    public List<ListaDosVotantes> todosVotantes() {
+    public List<ListaDosVotantes> todosVotos() {
         return listaDosVotantes;
     }
 }

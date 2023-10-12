@@ -29,7 +29,7 @@ public class VotoEntity {
     private Long estudanteId;
 
     @NotNull
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "voto_id", referencedColumnName = "id")
     private List<OpcoesVotos> opcoesVotos = new ArrayList<>();
 }

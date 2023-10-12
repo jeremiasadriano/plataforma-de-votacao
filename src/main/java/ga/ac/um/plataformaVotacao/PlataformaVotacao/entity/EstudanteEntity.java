@@ -33,7 +33,7 @@ public class EstudanteEntity extends UsuarioModel {
     @Column(name = "role")
     private String role;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "estudante_id", referencedColumnName = "id")
     private List<VotoEntity> votoEntities = new ArrayList<>();
 }
