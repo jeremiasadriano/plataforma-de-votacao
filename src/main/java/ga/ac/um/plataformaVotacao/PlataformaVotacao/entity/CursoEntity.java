@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 @Getter
@@ -34,7 +34,7 @@ public class CursoEntity implements Serializable {
     private List<EstudanteEntity> estudanteEntities = new ArrayList<>();
 
     @PrePersist
-    private void prePresist() {
-        this.anoAtual = Calendar.getInstance().get(Calendar.YEAR);
+    private void anoRegistro() {
+        this.anoAtual = LocalDate.now().getYear();
     }
 }

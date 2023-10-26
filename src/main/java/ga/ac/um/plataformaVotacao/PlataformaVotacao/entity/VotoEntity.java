@@ -6,8 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -31,5 +31,5 @@ public class VotoEntity {
     @NotNull
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "voto_id", referencedColumnName = "id")
-    private List<OpcoesVotos> opcoesVotos = new ArrayList<>();
+    private Set<OpcoesVotos> opcoesVotos = new HashSet<>();
 }

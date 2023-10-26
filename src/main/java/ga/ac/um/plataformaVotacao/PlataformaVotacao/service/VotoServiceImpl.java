@@ -12,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class VotoServiceImpl implements VotoService {
@@ -80,7 +77,7 @@ public class VotoServiceImpl implements VotoService {
         if (dadosVotosOptional.isEmpty()) return ResponseEntity.badRequest().build();
 
 //        Validar se o estudante já votou ou não
-        List<OpcoesVotos> listaOpcoesVotos = dadosVotosOptional.get().getOpcoesVotos();
+        Set<OpcoesVotos> listaOpcoesVotos = dadosVotosOptional.get().getOpcoesVotos();
         for (OpcoesVotos receberListaOpcoesVotos : listaOpcoesVotos) {
             List<ListaDosVotantes> listarTodosContadorVotos = receberListaOpcoesVotos.todosVotos();
             for (ListaDosVotantes receberListaTodosContadorVotos : listarTodosContadorVotos) {

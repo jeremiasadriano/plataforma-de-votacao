@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -40,4 +41,9 @@ public abstract class UsuarioModel implements Serializable {
 
     @Column(name = "estado_conta")
     private boolean estadoConta;
+
+    @PrePersist
+    public void dataRegistro() {
+        this.dataRegistro = LocalDate.now().toString();
+    }
 }
