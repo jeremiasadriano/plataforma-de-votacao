@@ -106,7 +106,7 @@ public class VotoServiceImpl implements VotoService {
                 this.listaDosVotatantesRepository.deleteById(votantes.getId());
                 return ResponseEntity.ok("Removido com sucesso!");
             } else if (Objects.isNull(votantes.getEstudanteId())) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Voto não encontrado com sucesso!");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Voto não encontrado!");
             }
         }
         return ResponseEntity.badRequest().body("O servidor não conseguiu carregar a requisição!");
