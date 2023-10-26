@@ -8,10 +8,12 @@ import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.EstudanteReposito
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.ListaDosVotatantesRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.OpcoesVotosRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.VotoRepository;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.awt.image.AffineTransformOp;
 import java.util.*;
 
 @Service

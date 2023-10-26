@@ -29,6 +29,11 @@ public class MensagemServiceImpl implements MensagemService {
     }
 
     @Override
+    public ResponseEntity<?> listarMensagens() {
+        return ResponseEntity.ok(this.mensagemRepository.findAll());
+    }
+
+    @Override
     public ResponseEntity<?> verMensagem(Long idMensagem) {
         if (idMensagem == null) return ResponseEntity.badRequest().body("Erro: mensagem não encontrada!");
         Optional<Mensagem> mensagemOptional = this.mensagemRepository.findById(idMensagem);
@@ -51,10 +56,28 @@ public class MensagemServiceImpl implements MensagemService {
         Optional<Mensagem> mensagemOptional = this.mensagemRepository.findById(idMensagem);
         if (mensagemOptional.isEmpty()) return ResponseEntity.notFound().build();
 
-        if (Objects.equals(idEstudante, mensagemOptional.get().getEstudanteId())) {
-
+        Mensagem mensagemGet = mensagemOptional.get();
+        if (Objects.equals(idEstudante, mensagemGet.getEstudanteId())) {
+            mensagemGet.setMensagem(mensagem.getMensagem());
+            mensagemGet.setEstudanteId(idEstudante);
+            return ResponseEntity.ok(this.mensagemRepository.save(mensagemGet));
         }
-
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Um estudante não pode editar uma mensagem que não o pertence!");
+    }
+
+    @Override
+    public ResponseEntity<?> apagarMensagem(Long idMensagem, Long idEstudante) {
+        if (idMensagem == null || idEstudante == null)
+            return ResponseEntity.badRequest().body("O servidor não conseguiu carregar a sua requisição");
+
+        Optional<Mensagem> mensagemOptional = this.mensagemRepository.findById(idMensagem);
+        if (mensagemOptional.isPresent()) {
+            Mensagem mensagemGet = mensagemOptional.get();
+            if (Objects.equals(idEstudante, mensagemGet.getEstudanteId())) {
+                this.mensagemRepository.deleteById(idMensagem);
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Mensagem removida com sucesso!");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 }
