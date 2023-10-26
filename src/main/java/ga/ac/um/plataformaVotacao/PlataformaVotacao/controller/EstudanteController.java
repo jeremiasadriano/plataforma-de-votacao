@@ -6,8 +6,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/")
 public class EstudanteController {
@@ -40,10 +38,5 @@ public class EstudanteController {
     @DeleteMapping("/perfil/id={idEstudante}")
     public ResponseEntity<?> apagarConta(@PathVariable("idEstudante") long idEstudante) {
         return this.estudanteService.apagarConta(idEstudante);
-    }
-
-    @GetMapping("/listarEstudantes")
-    public ResponseEntity<List<EstudanteEntity>> verEstudantes() {
-        return this.estudanteService.verEstudantes();
     }
 }

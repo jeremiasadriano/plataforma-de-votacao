@@ -1,7 +1,9 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.controller;
 
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.AdminEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.AdminService;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.EstudanteService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,9 +14,11 @@ import java.util.List;
 @RequestMapping("/admin")
 public class AdminController {
     private final AdminService adminService;
+    private final EstudanteService estudanteService;
 
-    public AdminController(AdminService adminService) {
+    public AdminController(AdminService adminService, EstudanteService estudanteService) {
         this.adminService = adminService;
+        this.estudanteService = estudanteService;
     }
 
     @PostMapping("/registarAdmin")
@@ -47,4 +51,8 @@ public class AdminController {
         return this.adminService.listarAdmin();
     }
 
+    @GetMapping("/listarEstudantes")
+    public ResponseEntity<List<EstudanteEntity>> verEstudantes() {
+        return this.estudanteService.verEstudantes();
+    }
 }
