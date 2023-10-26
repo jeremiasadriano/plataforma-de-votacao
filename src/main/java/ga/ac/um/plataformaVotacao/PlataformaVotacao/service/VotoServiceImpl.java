@@ -31,7 +31,7 @@ public class VotoServiceImpl implements VotoService {
 
     @Override
     public ResponseEntity<?> criarVotacao(VotoEntity dadosVotoEntity) {
-        if (dadosVotoEntity == null)
+        if (dadosVotoEntity == null || dadosVotoEntity.getTituloVotacao().isEmpty() || dadosVotoEntity.getTituloVotacao().equalsIgnoreCase("null"))
             return ResponseEntity.badRequest().body("Erro: Não foi possível iniciar a votação,dados inválidos!");
         List<VotoEntity> listaVotosEntity = this.votoRepository.findAll();
 

@@ -2,6 +2,7 @@ package ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -22,7 +23,6 @@ public class OpcoesVotos {
     private Long id;
 
     @NotNull
-    @NotEmpty
     @Column(name = "opcoes")
     private String opcoes;
 
