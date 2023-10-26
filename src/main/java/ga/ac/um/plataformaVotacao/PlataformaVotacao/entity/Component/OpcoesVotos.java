@@ -2,6 +2,8 @@ package ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +21,8 @@ public class OpcoesVotos {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotNull
+    @NotEmpty
     @Column(name = "opcoes")
     private String opcoes;
 
