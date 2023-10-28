@@ -2,22 +2,23 @@ package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.EstudanteRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class EstudanteServiceImpl implements EstudanteService {
     private final EstudanteRepository estudanteRepository;
-
-    public EstudanteServiceImpl(EstudanteRepository estudanteRepository) {
-        this.estudanteRepository = estudanteRepository;
-    }
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public ResponseEntity<?> criarConta(EstudanteEntity dadosEstudante) {
+        dadosEstudante.setSenha(passwordEncoder.encode(dadosEstudante.getSenha()));
         return ResponseEntity.ok(this.estudanteRepository.save(dadosEstudante));
     }
 
