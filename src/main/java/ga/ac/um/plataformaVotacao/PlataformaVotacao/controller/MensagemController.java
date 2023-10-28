@@ -2,7 +2,6 @@ package ga.ac.um.plataformaVotacao.PlataformaVotacao.controller;
 
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.Mensagem;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.MensagemService;
-import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +36,7 @@ public class MensagemController {
 
     @DeleteMapping("/apagarmensagem/{idMensagem}/{idEstudante}")
     public ResponseEntity<?> apagarMensagem(@PathVariable("idMensagem") Long idMensagem, @PathVariable("idEstudante") Long idEstudante) {
-        return this.mensagemService.apagarMensagem(idMensagem,idEstudante);
+        return this.mensagemService.apagarMensagem(idMensagem, idEstudante);
     }
 }
 
