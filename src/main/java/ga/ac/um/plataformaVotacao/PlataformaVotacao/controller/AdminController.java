@@ -5,21 +5,18 @@ import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.AdminService;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.EstudanteService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/admin")
 public class AdminController {
     private final AdminService adminService;
     private final EstudanteService estudanteService;
-
-    public AdminController(AdminService adminService, EstudanteService estudanteService) {
-        this.adminService = adminService;
-        this.estudanteService = estudanteService;
-    }
 
     @PostMapping("/registarAdmin")
     public ResponseEntity<AdminEntity> criarConta(@Valid @RequestBody AdminEntity dadosAdmin) {

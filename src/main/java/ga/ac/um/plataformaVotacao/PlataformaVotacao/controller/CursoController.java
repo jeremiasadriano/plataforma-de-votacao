@@ -4,19 +4,17 @@ import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.CursoEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.CursoService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/cursos/")
 public class CursoController {
     private final CursoService cursoService;
-
-    public CursoController(CursoService cursoService) {
-        this.cursoService = cursoService;
-    }
 
     @PostMapping("/registar")
     public ResponseEntity<CursoEntity> criarCurso_E_Estudante(@Valid @RequestBody CursoEntity dadosEstudante) {

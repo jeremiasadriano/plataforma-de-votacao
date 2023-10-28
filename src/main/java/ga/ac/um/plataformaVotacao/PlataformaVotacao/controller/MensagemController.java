@@ -2,17 +2,15 @@ package ga.ac.um.plataformaVotacao.PlataformaVotacao.controller;
 
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.Mensagem;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.MensagemService;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/mensagem")
 public class MensagemController {
     private final MensagemService mensagemService;
-
-    public MensagemController(MensagemService mensagemService) {
-        this.mensagemService = mensagemService;
-    }
 
     @PostMapping("/")
     public ResponseEntity<?> comentar(@RequestBody Mensagem mensagem) {

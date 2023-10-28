@@ -3,17 +3,15 @@ package ga.ac.um.plataformaVotacao.PlataformaVotacao.controller;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.EstudanteService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/")
 public class EstudanteController {
     private final EstudanteService estudanteService;
-
-    public EstudanteController(EstudanteService estudanteService) {
-        this.estudanteService = estudanteService;
-    }
 
     @PostMapping("/registar/estudante")
     public ResponseEntity<?> criarConta(@Valid @RequestBody EstudanteEntity dadosEstudante) {

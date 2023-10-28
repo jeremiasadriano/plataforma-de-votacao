@@ -1,21 +1,17 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.controller;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.OpcoesVotos;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.VotoEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.VotoService;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/")
 public class VotoController {
-
     private final VotoService votoService;
-
-    public VotoController(VotoService votoService) {
-        this.votoService = votoService;
-    }
 
     @PostMapping("/estudante/criar-votacao")
     public ResponseEntity<?> criarVotacao(@Valid @RequestBody VotoEntity dadosVotoEntity) {
