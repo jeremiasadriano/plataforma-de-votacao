@@ -11,5 +11,6 @@ public interface EstudanteRepository extends JpaRepository<EstudanteEntity, Long
     EstudanteEntity findByEmailAndSenha(String emailEstudante, String senhaEstudante);
 
     EstudanteEntity findByEmail(@NotBlank @Email String email);
+
 }
 

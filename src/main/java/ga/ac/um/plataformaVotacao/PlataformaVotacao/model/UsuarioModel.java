@@ -42,6 +42,10 @@ public abstract class UsuarioModel implements Serializable {
     @Column(name = "estado_conta")
     private boolean estadoConta;
 
+    @Column(name = "roles")
+    @Enumerated(EnumType.STRING)
+    private Roles roles;
+
     @PrePersist
     public void dataRegistro() {
         this.dataRegistro = LocalDate.now().toString();

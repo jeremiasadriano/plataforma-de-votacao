@@ -1,7 +1,7 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.AdminEntity;
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.*;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.AdminRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,10 +29,17 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public ResponseEntity<String> fazerLogin(String emailEntity, String senhaEntity) {
-        AdminEntity adminEntity = this.adminRepository.findByEmailAndSenha(emailEntity, senhaEntity);
-
-        if (adminEntity == null) return ResponseEntity.badRequest().body("Usuario não encontrado");
-        else return ResponseEntity.ok().body("Hello Usuario");
+        if (emailEntity.isEmpty() || senhaEntity.isEmpty()) return ResponseEntity.badRequest().build();
+        AdminEntity adminEntity = this.adminRepository.findByEmail(emailEntity);
+        if (adminEntity == null) {
+            return ResponseEntity.notFound().build();
+        }
+        String senhaArmazenada = adminEntity.getSenha();
+        if (passwordEncoder.matches(senhaEntity, senhaArmazenada)) {
+            return ResponseEntity.ok().body("Ele existe");
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @Override
@@ -70,4 +77,5 @@ public class AdminServiceImpl implements AdminService {
     public ResponseEntity<List<AdminEntity>> listarAdmin() {
         return ResponseEntity.ok().body(this.adminRepository.findAll());
     }
+
 }

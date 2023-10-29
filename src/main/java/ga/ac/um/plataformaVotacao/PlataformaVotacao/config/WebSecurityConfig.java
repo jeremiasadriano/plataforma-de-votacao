@@ -1,5 +1,6 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.config;
 
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,9 +15,11 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class WebSecurityConfig {
-    private final String[] WHITE_LIST_URIS_POST = {"/registar/estudante", "/registarAdmin",};
-    private final String[] WHITE_LIST_URIS_GET = {"/login/email={emailEstudante}&senha={senhaEstudante}", "/login/emailAdmin={emailEntity}&senha={senhaEntity}"};
+    private final String[] ESTUDANTE_LIST_POST = {"/registar/estudante"};
+    private final String[] WHITE_LIST_GET = {"/login/email={emailEstudante}&senha={senhaEstudante}", "/login/emailAdmin={emailEntity}&senha={senhaEntity}"};
+    private final String[] ADMIN_LIST_POST = {"/registarAdmin"};
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -29,9 +32,10 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> {
                     authorize
-                            .requestMatchers(HttpMethod.GET, WHITE_LIST_URIS_GET).permitAll()
-                            .requestMatchers(HttpMethod.POST, WHITE_LIST_URIS_POST).permitAll()
-                            .anyRequest().authenticated();
+                            .requestMatchers(HttpMethod.GET, WHITE_LIST_GET).permitAll()
+                            .requestMatchers(HttpMethod.POST, ESTUDANTE_LIST_POST).permitAll()
+                            .requestMatchers(HttpMethod.POST, ADMIN_LIST_POST).hasRole("ADMIN")
+                            .anyRequest().permitAll();
                 }).formLogin(Customizer.withDefaults()).build();
     }
 }

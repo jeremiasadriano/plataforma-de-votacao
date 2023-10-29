@@ -30,9 +30,6 @@ public class EstudanteEntity extends UsuarioModel {
     @Column(name = "curso_id")
     private Long cursoId;
 
-    @Column(name = "role")
-    private String role;
-
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "estudante_id", referencedColumnName = "id")
     private List<VotoEntity> votoEntities = new ArrayList<>();

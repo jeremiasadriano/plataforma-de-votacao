@@ -30,9 +30,17 @@ public class EstudanteServiceImpl implements EstudanteService {
 
     @Override
     public ResponseEntity<EstudanteEntity> login(String emailEstudante, String senhaEstudante) {
-        EstudanteEntity estudanteEntity = this.estudanteRepository.findByEmailAndSenha(emailEstudante, senhaEstudante);
-        if (estudanteEntity == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok().body(estudanteEntity);
+        if (emailEstudante.isEmpty() || senhaEstudante.isEmpty()) return ResponseEntity.badRequest().build();
+        EstudanteEntity estudanteEntity = this.estudanteRepository.findByEmail(emailEstudante);
+        if (estudanteEntity == null) {
+            return ResponseEntity.notFound().build();
+        }
+        String senhaArmazenada = estudanteEntity.getSenha();
+        if (passwordEncoder.matches(senhaEstudante, senhaArmazenada)) {
+            return ResponseEntity.ok().body(estudanteEntity);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @Override
@@ -64,4 +72,5 @@ public class EstudanteServiceImpl implements EstudanteService {
     public ResponseEntity<List<EstudanteEntity>> verEstudantes() {
         return ResponseEntity.ok().body(this.estudanteRepository.findAll());
     }
+
 }
