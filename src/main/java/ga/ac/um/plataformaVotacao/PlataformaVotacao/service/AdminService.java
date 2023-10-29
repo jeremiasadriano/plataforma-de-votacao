@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface AdminService {
-    ResponseEntity<AdminEntity> criarConta(AdminEntity dadosAdmin);
+    ResponseEntity<?> criarConta(AdminEntity dadosAdmin);
 
     ResponseEntity<String> fazerLogin(String emailEntity, String senhaEntity);
 

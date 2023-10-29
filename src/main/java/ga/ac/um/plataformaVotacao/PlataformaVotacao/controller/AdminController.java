@@ -19,7 +19,7 @@ public class AdminController {
     private final EstudanteService estudanteService;
 
     @PostMapping("/registarAdmin")
-    public ResponseEntity<AdminEntity> criarConta(@Valid @RequestBody AdminEntity dadosAdmin) {
+    public ResponseEntity<?> criarConta(@Valid @RequestBody AdminEntity dadosAdmin) {
         return this.adminService.criarConta(dadosAdmin);
     }
 

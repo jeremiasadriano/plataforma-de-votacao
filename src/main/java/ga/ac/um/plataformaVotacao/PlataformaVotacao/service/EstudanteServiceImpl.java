@@ -3,6 +3,7 @@ package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.EstudanteRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,11 @@ public class EstudanteServiceImpl implements EstudanteService {
 
     @Override
     public ResponseEntity<?> criarConta(EstudanteEntity dadosEstudante) {
+        if (dadosEstudante == null) return ResponseEntity.badRequest().build();
+        EstudanteEntity estudante = this.estudanteRepository.findByEmail(dadosEstudante.getEmail());
+        if (estudante != null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email já existente!");
+        }
         dadosEstudante.setSenha(passwordEncoder.encode(dadosEstudante.getSenha()));
         return ResponseEntity.ok(this.estudanteRepository.save(dadosEstudante));
     }
@@ -40,9 +46,10 @@ public class EstudanteServiceImpl implements EstudanteService {
         Optional<EstudanteEntity> estudanteEntity = this.estudanteRepository.findById(idEstudante);
         if (estudanteEntity.isEmpty()) throw new Exception("Estudante Vazio");
 
-        estudanteEntity.get().setNome(dadosEstudante.getNome());
-        estudanteEntity.get().setSenha(dadosEstudante.getSenha());
-        estudanteEntity.get().setEmail(dadosEstudante.getEmail());
+        EstudanteEntity estudanteDados = estudanteEntity.get();
+        estudanteDados.setNome(dadosEstudante.getNome());
+        estudanteDados.setSenha(dadosEstudante.getSenha());
+        estudanteDados.setEmail(dadosEstudante.getEmail());
         this.estudanteRepository.save(estudanteEntity.get());
         return ResponseEntity.accepted().body("Dados Atualizados com sucesso");
     }

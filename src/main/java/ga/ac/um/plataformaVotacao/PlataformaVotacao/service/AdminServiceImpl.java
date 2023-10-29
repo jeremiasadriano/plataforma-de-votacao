@@ -2,23 +2,28 @@ package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.AdminEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.*;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
-
-
-    public AdminServiceImpl(AdminRepository adminRepository) {
-        this.adminRepository = adminRepository;
-    }
+    private final PasswordEncoder passwordEncoder;
 
     @Override
-    public ResponseEntity<AdminEntity> criarConta(AdminEntity dadosAdmin) {
+    public ResponseEntity<?> criarConta(AdminEntity dadosAdmin) {
+        AdminEntity adminEntity = this.adminRepository.findByEmail(dadosAdmin.getEmail());
+        if (adminEntity != null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email já existente!");
+        }
+        dadosAdmin.setSenha(passwordEncoder.encode(dadosAdmin.getSenha()));
         return ResponseEntity.accepted().body(this.adminRepository.save(dadosAdmin));
     }
 
