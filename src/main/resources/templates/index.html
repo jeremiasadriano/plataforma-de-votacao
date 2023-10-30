@@ -7,13 +7,13 @@
             content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-    <link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
     <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
             rel="stylesheet"
             integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
             crossorigin="anonymous"
     />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
     <title>Platforma de Votação</title>
 </head>
 <body>
@@ -25,7 +25,7 @@
     </div>
     <div class="right-content">
 
-        <form class="login container" action="http://localhost:8080/login" method="Post">
+        <form class="login container" action="/login" method="Post">
             <div class="container w-75">
                 <h2>Login</h2>
                 <div class="d-flex flex-column gap-4">
@@ -50,7 +50,10 @@
                     </div>
 
                     <button class="btn text-bg-dark">Login</button>
-                    <div class="d-flex gap-5">
+                    <div class="alert alert-danger" role="alert">
+                        <p th:text="${DataError}"></p>
+                    </div>
+                    <div class="d-flex gap-lg-5">
                         <p>
                             Não tem uma conta? <span class="text-primary">Crie já </span>
                         </p>

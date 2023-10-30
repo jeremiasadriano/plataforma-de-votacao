@@ -24,9 +24,11 @@ public class EstudanteController {
         ModelAndView view = new ModelAndView();
         var response = this.estudanteService.login(emailEstudante, senhaEstudante);
         if (response.getStatusCode().is2xxSuccessful()) {
+            view.addObject("Usuario", response.getBody());
             view.setViewName("/page/home");
             return view;
         } else {
+            view.addObject("DataError", "Dados inseridos são inválidos!");
             view.setViewName("index");
             return view;
         }

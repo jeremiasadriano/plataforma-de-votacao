@@ -37,7 +37,7 @@ public class EstudanteServiceImpl implements EstudanteService {
         }
         String senha = estudanteEntity.getSenha();
         if (passwordEncoder.matches(senhaEstudante, senha)) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body(estudanteEntity);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
