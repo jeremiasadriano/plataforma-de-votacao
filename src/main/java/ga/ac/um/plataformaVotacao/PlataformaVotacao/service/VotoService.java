@@ -1,7 +1,6 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.OpcoesVotos;
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.VotoEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.VotoEntity;
 import org.springframework.http.ResponseEntity;
 
 public interface VotoService {

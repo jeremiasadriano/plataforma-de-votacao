@@ -1,7 +1,7 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.controller;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.AdminEntity;
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.AdminEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.AdminService;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.EstudanteService;
 import jakarta.validation.Valid;
@@ -23,9 +23,9 @@ public class AdminController {
         return this.adminService.criarConta(dadosAdmin);
     }
 
-    @GetMapping("/login/emailAdmin={emailEntity}&senha={senhaEntity}")
-    public ResponseEntity<String> fazerLogin(@Valid @PathVariable("emailEntity") String emailEntity, @PathVariable("senhaEntity") String senhaEntity) {
-        return this.adminService.fazerLogin(emailEntity, senhaEntity);
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestParam("email") String email, @RequestParam("senha") String senha) {
+        return this.adminService.fazerLogin(email, senha);
     }
 
     @GetMapping("/perfil/adminID={id}")

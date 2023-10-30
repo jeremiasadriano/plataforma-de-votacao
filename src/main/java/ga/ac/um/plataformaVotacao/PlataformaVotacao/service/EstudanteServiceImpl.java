@@ -1,6 +1,6 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.EstudanteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,9 +35,9 @@ public class EstudanteServiceImpl implements EstudanteService {
         if (estudanteEntity == null) {
             return ResponseEntity.notFound().build();
         }
-        String senhaArmazenada = estudanteEntity.getSenha();
-        if (passwordEncoder.matches(senhaEstudante, senhaArmazenada)) {
-            return ResponseEntity.ok().body(estudanteEntity);
+        String senha = estudanteEntity.getSenha();
+        if (passwordEncoder.matches(senhaEstudante, senha)) {
+            return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

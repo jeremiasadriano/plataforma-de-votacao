@@ -1,7 +1,7 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.Mensagem;
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.Component.Mensagem;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.EstudanteRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.MensagemRepository;
 import org.springframework.http.HttpStatus;

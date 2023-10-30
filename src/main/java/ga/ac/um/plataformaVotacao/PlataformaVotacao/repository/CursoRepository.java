@@ -1,6 +1,6 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.repository;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.CursoEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.CursoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

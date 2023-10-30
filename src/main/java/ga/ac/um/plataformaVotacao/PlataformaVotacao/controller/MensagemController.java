@@ -1,6 +1,6 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.controller;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.Mensagem;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.Component.Mensagem;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.MensagemService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

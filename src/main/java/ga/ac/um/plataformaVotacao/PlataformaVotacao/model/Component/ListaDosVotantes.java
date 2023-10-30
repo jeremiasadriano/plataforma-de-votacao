@@ -1,4 +1,4 @@
-package ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component;
+package ga.ac.um.plataformaVotacao.PlataformaVotacao.model.Component;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

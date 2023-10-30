@@ -1,5 +1,6 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.model;
 
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.Component.Roles;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

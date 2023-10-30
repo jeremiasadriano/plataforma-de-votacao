@@ -1,6 +1,6 @@
-package ga.ac.um.plataformaVotacao.PlataformaVotacao.entity;
+package ga.ac.um.plataformaVotacao.PlataformaVotacao.model;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.OpcoesVotos;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.Component.OpcoesVotos;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;

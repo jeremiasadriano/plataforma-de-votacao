@@ -1,6 +1,6 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.EstudanteEntity;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;

@@ -1,19 +1,17 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.ListaDosVotantes;
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.OpcoesVotos;
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.VotoEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.Component.ListaDosVotantes;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.Component.OpcoesVotos;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.EstudanteEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.VotoEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.EstudanteRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.ListaDosVotatantesRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.OpcoesVotosRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.VotoRepository;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.awt.image.AffineTransformOp;
 import java.util.*;
 
 @Service
@@ -46,9 +44,8 @@ public class VotoServiceImpl implements VotoService {
 
                 Optional<EstudanteEntity> buscarEstudantePeloId = this.estudanteRepository.findById(idEstudante);
                 if (buscarEstudantePeloId.isEmpty()) {
-                    return ResponseEntity.badRequest().body("Não estudantes não podem iniciar uma votação");
+                    return ResponseEntity.notFound().build();
                 }
-
                 String nomeEstudante = buscarEstudantePeloId.get().getNome();
                 return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Não é permitido criar-se uma votação com um título já existente, o estudante " + "'" + nomeEstudante + "'" + " já abriu uma votação com o mesmo título.");
             }
@@ -81,14 +78,14 @@ public class VotoServiceImpl implements VotoService {
 //        Validar se o estudante já votou ou não
         Set<OpcoesVotos> listaOpcoesVotos = dadosVotosOptional.get().getOpcoesVotos();
         for (OpcoesVotos receberListaOpcoesVotos : listaOpcoesVotos) {
-            List<ListaDosVotantes> listarTodosContadorVotos = receberListaOpcoesVotos.todosVotos();
-            for (ListaDosVotantes receberListaTodosContadorVotos : listarTodosContadorVotos) {
-                Long idVotante = receberListaTodosContadorVotos.getEstudanteId();
+            List<ListaDosVotantes> listarTodasVotos = receberListaOpcoesVotos.todosVotos();
+            for (ListaDosVotantes receberListarTodasVotos : listarTodasVotos) {
+                Long idVotante = receberListarTodasVotos.getEstudanteId();
                 if (Objects.equals(idVotante, estudanteId))
                     return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("Um estudante não pode votar duas vezes");
             }
         }
-//        Adicionar os dados do voto ao contador
+//        Adicionar os dados do voto a listadevotos
         ListaDosVotantes listaDosVotantes = new ListaDosVotantes();
         listaDosVotantes.setOpcoesId(opcoesVotosOptional.get().getId());
         listaDosVotantes.setEstudanteId(estudanteEntityOptional.get().getId());

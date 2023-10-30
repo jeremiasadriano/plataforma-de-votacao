@@ -1,7 +1,7 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.controller;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.CursoEntity;
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.CursoEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.CursoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

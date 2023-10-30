@@ -1,6 +1,6 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.Component.Mensagem;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.Component.Mensagem;
 import org.springframework.http.ResponseEntity;
 
 public interface MensagemService {

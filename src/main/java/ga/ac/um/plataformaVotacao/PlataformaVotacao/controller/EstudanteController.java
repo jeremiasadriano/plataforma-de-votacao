@@ -1,11 +1,12 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.controller;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.EstudanteEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.EstudanteEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.EstudanteService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @AllArgsConstructor
@@ -18,9 +19,17 @@ public class EstudanteController {
         return this.estudanteService.criarConta(dadosEstudante);
     }
 
-    @GetMapping("/login/email={emailEstudante}&senha={senhaEstudante}")
-    public ResponseEntity<EstudanteEntity> login(@Valid @RequestBody @PathVariable("emailEstudante") String emailEstudante, @PathVariable("senhaEstudante") String senhaEstudante) {
-        return this.estudanteService.login(emailEstudante, senhaEstudante);
+    @PostMapping("/login")
+    public ModelAndView login(@RequestParam("email") String emailEstudante, @RequestParam("senha") String senhaEstudante) {
+        ModelAndView view = new ModelAndView();
+        var response = this.estudanteService.login(emailEstudante, senhaEstudante);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            view.setViewName("/page/home");
+            return view;
+        } else {
+            view.setViewName("index");
+            return view;
+        }
     }
 
     @GetMapping("/perfil/id={idEstudante}")

@@ -1,6 +1,6 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.entity.AdminEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.AdminEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.AdminRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

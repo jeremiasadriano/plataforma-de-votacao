@@ -1,4 +1,4 @@
-package ga.ac.um.plataformaVotacao.PlataformaVotacao.entity;
+package ga.ac.um.plataformaVotacao.PlataformaVotacao.model;
 
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.UsuarioModel;
 import jakarta.persistence.Column;

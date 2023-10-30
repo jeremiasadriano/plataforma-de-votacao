@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-mz">
+<head>
+    <meta charset="UTF-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css"/>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+            crossorigin="anonymous"
+    />
+    <title>Platforma de Votação</title>
+</head>
+<body>
+<section class="d-flex">
+    <div class="left-content">
+        <div class="dashboard container text-bg-dark">
+            <h3>Login Dashboard</h3>
+        </div>
+    </div>
+    <div class="right-content">
+
+        <form class="login container" action="http://localhost:8080/login" method="Post">
+            <div class="container w-75">
+                <h2>Login</h2>
+                <div class="d-flex flex-column gap-4">
+                    <div class="d-flex flex-column gap-2">
+                        <label>Endereço de Email</label>
+                        <input
+                                type="text"
+                                class="form-control"
+                                name="email"
+                                placeholder="70000000@ucm.ac.mz"
+                        />
+                    </div>
+
+                    <div class="d-flex flex-column gap-2">
+                        <label>Palavra passe</label>
+                        <input
+                                type="password"
+                                class="form-control"
+                                name="senha"
+                                placeholder="**********"
+                        />
+                    </div>
+
+                    <button class="btn text-bg-dark">Login</button>
+                    <div class="d-flex gap-5">
+                        <p>
+                            Não tem uma conta? <span class="text-primary">Crie já </span>
+                        </p>
+                        <span class="text-primary">Esqueceu a palavra passe?</span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>
