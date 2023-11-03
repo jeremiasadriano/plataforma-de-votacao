@@ -76,7 +76,7 @@ public class VotoServiceImpl implements VotoService {
         if (dadosVotosOptional.isEmpty()) return ResponseEntity.badRequest().build();
 
 //        Validar se o estudante já votou ou não
-        Set<OpcoesVotos> listaOpcoesVotos = dadosVotosOptional.get().getOpcoesVotos();
+        List<OpcoesVotos> listaOpcoesVotos = dadosVotosOptional.get().getOpcoesVotos();
         for (OpcoesVotos receberListaOpcoesVotos : listaOpcoesVotos) {
             List<ListaDosVotantes> listarTodasVotos = receberListaOpcoesVotos.todosVotos();
             for (ListaDosVotantes receberListarTodasVotos : listarTodasVotos) {
@@ -112,11 +112,12 @@ public class VotoServiceImpl implements VotoService {
     }
 
     @Override
-    public ResponseEntity<?> listarOpcoesVoto() {
+    public ResponseEntity<List<OpcoesVotos>> listarOpcoesVoto() {
         List<OpcoesVotos> listaOpcoesVotos = this.opcoesVotosRepository.findAll();
         if (listaOpcoesVotos.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok(listaOpcoesVotos);
     }
+
 
     @Override
     public ResponseEntity<?> listarNomesVotantes(Long idOpcao) {
@@ -149,6 +150,13 @@ public class VotoServiceImpl implements VotoService {
             }
         }
         return ResponseEntity.badRequest().body("O servidor não conseguiu carregar a sua requisição!");
+    }
+
+    @Override
+    public List<VotoEntity> listarEstudantsVotes() {
+        List<VotoEntity> estudanteEntities = this.votoRepository.findAll();
+        if (estudanteEntities.isEmpty()) return Collections.emptyList();
+        return estudanteEntities;
     }
 }
 

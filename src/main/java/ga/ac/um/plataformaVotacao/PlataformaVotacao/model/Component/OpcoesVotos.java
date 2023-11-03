@@ -27,6 +27,10 @@ public class OpcoesVotos {
     @Column(name = "voto_id")
     private Long votoId;
 
+    @NotNull
+    @Column(name = "dashboard_voto")
+    private Boolean dashboardVoto;
+
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "id_opcao", referencedColumnName = "id")
     private List<ListaDosVotantes> listaDosVotantes = new ArrayList<>();
@@ -37,5 +41,10 @@ public class OpcoesVotos {
 
     public List<ListaDosVotantes> todosVotos() {
         return listaDosVotantes;
+    }
+
+    @PrePersist
+    private void dashboard() {
+        this.dashboardVoto = false;
     }
 }

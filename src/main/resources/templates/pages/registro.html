@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-mz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <title>Platforma de Votação</title>
+  </head>
+  <body>
+    <section class="d-flex">
+      <div class="left-content">
+        <div class="dashboard container text-bg-dark">
+          <h3>Registre-se e tenha a chance de decidir quem será o p</h3>
+        </div>
+      </div>
+      <div class="right-content">
+        <form class="login container" action="/registar/estudante" method="POST">
+          <div class="container-fluid w-75">
+            <h2 class="text-uppercase">registrar</h2>
+            <div class="d-flex flex-column gap-4">
+              <div class="d-flex flex-column gap-2">
+                <label>Nome completo</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="nome"
+                  placeholder="João Carlos"
+                />
+              </div>
+              <div class="d-flex flex-column gap-2">
+                <label>Endereço de Email</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  name="email"
+                  placeholder="70000000@ucm.ac.mz"
+                />
+              </div>
+              <div class="d-flex flex-column gap-2">
+                <label>Palavra passe</label>
+                <input
+                  type="password"
+                  class="form-control"
+                  name="senha"
+                  placeholder="**********"
+                />
+              </div>
+              <div class="d-flex container-fluid w-100 gap-2">
+                <div>
+                  <p>Ano</p>
+                  <select name="anoEstudante" class="form-select">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                  </select>
+                </div>
+
+                <div>
+                  <p>Turno</p>
+                  <select name="turnoEstudante" class="form-select">
+                    <option value="Diurno">Diurno</option>
+                    <option value="Noturno">Noturno</option>
+                  </select>
+                </div>
+
+                <div>
+                  <p>Sexo</p>
+                  <select name="sexo" class="form-select">
+                    <option value="Feminino">Feminino</option>
+                    <option value="Masculino">Masculino</option>
+                  </select>
+                </div>
+
+                <div>
+                  <p>Curso</p>
+                  <select name="cursoId" class="form-select">
+                    <option value="1">
+                      Administração e Gestão de Empresas
+                    </option>
+                    <option value="2">Arquitetura</option>
+                    <option value="3">Contabilidade e Auditoria</option>
+                    <option value="4">Direito</option>
+                    <option value="5">Economia e Gestão</option>
+                    <option value="6">Gestão Portuária</option>
+                    <option value="7">Gestão de recursos</option>
+                    <option value="8">Tecnologias de informação</option>
+                  </select>
+                </div>
+              </div>
+              <div class="alert alert-danger" role="alert" id="wrong_password">
+                <p th:text="${DadosRegistro}" id="wrong_password_text"></p>
+              </div>
+              <button class="btn text-bg-dark">Registar</button>
+              <div class="d-flex gap-lg-5">
+                <p>
+                  Tem uma conta? <span class="text-primary"> <a th:href="@{/pages/login}"> Faça o login </a></span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section>
+    <script th:src="@{/js/login.js}"></script>
+  </body>
+</html>

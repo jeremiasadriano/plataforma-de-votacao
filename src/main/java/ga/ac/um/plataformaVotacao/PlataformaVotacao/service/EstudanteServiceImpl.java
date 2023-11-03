@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -50,8 +52,9 @@ public class EstudanteServiceImpl implements EstudanteService {
     }
 
     @Override
-    public ResponseEntity<String> editarPerfil(long idEstudante, EstudanteEntity dadosEstudante) throws Exception {
-        Optional<EstudanteEntity> estudanteEntity = this.estudanteRepository.findById(idEstudante);
+    public ResponseEntity<String> editarPerfil(EstudanteEntity dadosEstudante) throws Exception {
+        if (!Objects.nonNull(dadosEstudante)) return ResponseEntity.notFound().build();
+        Optional<EstudanteEntity> estudanteEntity = this.estudanteRepository.findById(dadosEstudante.getId());
         if (estudanteEntity.isEmpty()) throw new Exception("Estudante Vazio");
 
         EstudanteEntity estudanteDados = estudanteEntity.get();
@@ -73,4 +76,15 @@ public class EstudanteServiceImpl implements EstudanteService {
         return ResponseEntity.ok().body(this.estudanteRepository.findAll());
     }
 
+    @Override
+    public ResponseEntity<List<EstudanteEntity>> anuncios() {
+        return ResponseEntity.ok(this.estudanteRepository.findAll());
+    }
+
+    @Override
+    public List<EstudanteEntity> listarEstudantsVotes() {
+        List<EstudanteEntity> estudanteEntities = this.estudanteRepository.findAll();
+        if (estudanteEntities.isEmpty()) return Collections.emptyList();
+        return estudanteEntities;
+    }
 }

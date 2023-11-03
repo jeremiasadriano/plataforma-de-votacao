@@ -12,10 +12,13 @@ public interface EstudanteService {
 
     ResponseEntity<EstudanteEntity> verPerfil(long idEstudante) throws Exception;
 
-    ResponseEntity<String> editarPerfil(long idEstudante, EstudanteEntity dadosEstudante) throws Exception;
+    ResponseEntity<String> editarPerfil(EstudanteEntity dadosEstudante) throws Exception;
 
     ResponseEntity<?> apagarConta(long idEstudante);
 
     ResponseEntity<List<EstudanteEntity>> verEstudantes();
 
+    ResponseEntity<List<EstudanteEntity>> anuncios();
+
+    List<EstudanteEntity> listarEstudantsVotes();
 }

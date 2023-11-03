@@ -18,7 +18,7 @@ import java.util.List;
 @Table(name = "curso_TABLE")
 public class CursoEntity implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 

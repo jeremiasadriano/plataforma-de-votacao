@@ -48,7 +48,9 @@ public abstract class UsuarioModel implements Serializable {
     private Roles roles;
 
     @PrePersist
-    public void dataRegistro() {
+    public void defaultData() {
         this.dataRegistro = LocalDate.now().toString();
+        this.estadoConta = true;
+        this.roles = Roles.ESTUDANTE;
     }
 }

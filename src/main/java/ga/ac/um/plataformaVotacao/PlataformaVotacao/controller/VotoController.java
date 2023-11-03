@@ -5,27 +5,43 @@ import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.VotoService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @AllArgsConstructor
-@RequestMapping("/")
 public class VotoController {
     private final VotoService votoService;
 
     @PostMapping("/estudante/criar-votacao")
-    public ResponseEntity<?> criarVotacao(@Valid @RequestBody VotoEntity dadosVotoEntity) {
-        return this.votoService.criarVotacao(dadosVotoEntity);
+    public String criarVotacao(@Valid VotoEntity dadosVotoEntity) {
+        ResponseEntity response = this.votoService.criarVotacao(dadosVotoEntity);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return "redirect:/dashboard";
+        } else {
+            return "pages/community";
+        }
     }
 
     @PostMapping("/estudante/votar/{idOpcao}/{idEstudante}")
-    public ResponseEntity<?> votar(@RequestBody @PathVariable("idOpcao") Long opcoesId, @PathVariable("idEstudante") Long estudanteId) {
-        return this.votoService.votar(opcoesId, estudanteId);
+    public Object votar(@PathVariable("idOpcao") Long opcoesId, @PathVariable("idEstudante") Long estudanteId) {
+        ResponseEntity response = this.votoService.votar(opcoesId, estudanteId);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return "redirect:/dashboard";
+        } else {
+            return "redirect:/dashboard";
+        }
     }
 
-    @DeleteMapping("/estudante/remover/{opcoesId}/{estudanteId}")
-    public ResponseEntity<?> removerVoto(@PathVariable("opcoesId") Long opcoesId, @PathVariable("estudanteId") Long estudanteId) {
-        return this.votoService.removerVoto(opcoesId, estudanteId);
+    @PostMapping("/estudante/remover/{opcoesId}/{estudanteId}")
+    public String removerVoto(@PathVariable("opcoesId") Long opcoesId, @PathVariable("estudanteId") Long estudanteId) {
+        var response = this.votoService.removerVoto(opcoesId, estudanteId);
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return "redirect:/";
+        } else {
+            return "redirect:/";
+        }
     }
 
     @GetMapping("/estudante/votar")
