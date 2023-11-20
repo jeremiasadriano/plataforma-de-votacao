@@ -1,5 +1,6 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.CursoEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.EstudanteEntity;
 import org.springframework.http.ResponseEntity;
 
@@ -12,13 +13,19 @@ public interface EstudanteService {
 
     ResponseEntity<EstudanteEntity> verPerfil(long idEstudante) throws Exception;
 
-    ResponseEntity<String> editarPerfil(EstudanteEntity dadosEstudante) throws Exception;
-
-    ResponseEntity<?> apagarConta(long idEstudante);
-
-    ResponseEntity<List<EstudanteEntity>> verEstudantes();
-
     ResponseEntity<List<EstudanteEntity>> anuncios();
 
     List<EstudanteEntity> listarEstudantsVotes();
+
+    List<EstudanteEntity> listarTodosEstudantes();
+
+    ResponseEntity<? extends EstudanteEntity> editarPerfil(EstudanteEntity estudante);
+
+    ResponseEntity<?> atualizarPerfil(EstudanteEntity dadosEstudante);
+
+    ResponseEntity<EstudanteEntity> recuperarSenha(String emailEstudante, String animal);
+
+    CursoEntity cursoEstudante(Long cursoId);
+
+    ResponseEntity<EstudanteEntity> detalhesEstudantes(Long id);
 }

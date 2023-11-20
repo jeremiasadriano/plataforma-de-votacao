@@ -1,6 +1,8 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.service;
 
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.CursoEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.EstudanteEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.CursoRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.EstudanteRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,13 +12,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
 @AllArgsConstructor
 public class EstudanteServiceImpl implements EstudanteService {
     private final EstudanteRepository estudanteRepository;
+    private final CursoRepository cursoRepository;
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -39,7 +41,11 @@ public class EstudanteServiceImpl implements EstudanteService {
         }
         String senha = estudanteEntity.getSenha();
         if (passwordEncoder.matches(senhaEstudante, senha)) {
-            return ResponseEntity.ok().body(estudanteEntity);
+            if (estudanteEntity.isEstadoConta()) {
+                return ResponseEntity.ok(estudanteEntity);
+            } else {
+                return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT).build();
+            }
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -52,31 +58,6 @@ public class EstudanteServiceImpl implements EstudanteService {
     }
 
     @Override
-    public ResponseEntity<String> editarPerfil(EstudanteEntity dadosEstudante) throws Exception {
-        if (!Objects.nonNull(dadosEstudante)) return ResponseEntity.notFound().build();
-        Optional<EstudanteEntity> estudanteEntity = this.estudanteRepository.findById(dadosEstudante.getId());
-        if (estudanteEntity.isEmpty()) throw new Exception("Estudante Vazio");
-
-        EstudanteEntity estudanteDados = estudanteEntity.get();
-        estudanteDados.setNome(dadosEstudante.getNome());
-        estudanteDados.setSenha(dadosEstudante.getSenha());
-        estudanteDados.setEmail(dadosEstudante.getEmail());
-        this.estudanteRepository.save(estudanteEntity.get());
-        return ResponseEntity.accepted().body("Dados Atualizados com sucesso");
-    }
-
-    @Override
-    public ResponseEntity<?> apagarConta(long idEstudante) {
-        this.estudanteRepository.deleteById(idEstudante);
-        return ResponseEntity.ok().build();
-    }
-
-    @Override
-    public ResponseEntity<List<EstudanteEntity>> verEstudantes() {
-        return ResponseEntity.ok().body(this.estudanteRepository.findAll());
-    }
-
-    @Override
     public ResponseEntity<List<EstudanteEntity>> anuncios() {
         return ResponseEntity.ok(this.estudanteRepository.findAll());
     }
@@ -86,5 +67,69 @@ public class EstudanteServiceImpl implements EstudanteService {
         List<EstudanteEntity> estudanteEntities = this.estudanteRepository.findAll();
         if (estudanteEntities.isEmpty()) return Collections.emptyList();
         return estudanteEntities;
+    }
+
+    @Override
+    public List<EstudanteEntity> listarTodosEstudantes() {
+        var estudantes = estudanteRepository.findAll();
+        if (estudantes.isEmpty()) {
+            return Collections.emptyList();
+        }
+        return estudantes;
+    }
+
+    @Override
+    public ResponseEntity<? extends EstudanteEntity> editarPerfil(EstudanteEntity estudante) {
+        Optional<EstudanteEntity> estudanteDados = this.estudanteRepository.findById(estudante.getId());
+        if (estudanteDados.isEmpty()) return ResponseEntity.notFound().build();
+        if (estudante.getId() == null) return ResponseEntity.notFound().build();
+        EstudanteEntity entidade = estudanteDados.get();
+        entidade.setEstadoConta(estudante.isEstadoConta());
+        entidade.setRoles(estudante.getRoles());
+        return ResponseEntity.ok(this.estudanteRepository.save(entidade));
+    }
+
+    @Override
+    public ResponseEntity<?> atualizarPerfil(EstudanteEntity estudante) {
+        Optional<EstudanteEntity> estudanteDados = this.estudanteRepository.findById(estudante.getId());
+        if (estudanteDados.isEmpty()) return ResponseEntity.notFound().build();
+        EstudanteEntity entidade = estudanteDados.get();
+        entidade.setNome(estudante.getNome());
+        entidade.setEmail(estudante.getEmail());
+        entidade.setSexo(estudante.getSexo());
+        entidade.setTurnoEstudante(estudante.getTurnoEstudante());
+        entidade.setAnoEstudante(estudante.getAnoEstudante());
+        entidade.setCursoId(estudante.getCursoId());
+        if (!estudante.getSenha().isEmpty()) {
+            entidade.setSenha(passwordEncoder.encode(estudante.getSenha()));
+        }
+        return ResponseEntity.ok(this.estudanteRepository.save(entidade));
+    }
+
+    @Override
+    public ResponseEntity<EstudanteEntity> recuperarSenha(String emailEstudante, String animal) {
+        if (emailEstudante.isEmpty() || animal.isEmpty()) return ResponseEntity.notFound().build();
+        var estudante = this.estudanteRepository.findByEmail(emailEstudante);
+        if (estudante == null) {
+            return ResponseEntity.notFound().build();
+        } else if (estudante.getAnimal().equalsIgnoreCase(animal)) {
+            String novaSenha = "123456789";
+            estudante.setSenha(passwordEncoder.encode(novaSenha));
+            return ResponseEntity.ok(this.estudanteRepository.save(estudante));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @Override
+    public CursoEntity cursoEstudante(Long cursoId) {
+        Optional<CursoEntity> curso = this.cursoRepository.findById(cursoId);
+        return curso.orElse(null);
+    }
+
+    @Override
+    public ResponseEntity<EstudanteEntity> detalhesEstudantes(Long id) {
+        if (id == null) return ResponseEntity.notFound().build();
+        Optional<EstudanteEntity> estudante = this.estudanteRepository.findById(id);
+        return estudante.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

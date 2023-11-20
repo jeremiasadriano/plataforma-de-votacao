@@ -8,11 +8,11 @@ import java.util.List;
 public interface AdminService {
     ResponseEntity<?> criarConta(AdminEntity dadosAdmin);
 
-    ResponseEntity<String> fazerLogin(String emailEntity, String senhaEntity);
+    ResponseEntity<AdminEntity> fazerLogin(String emailEntity, String senhaEntity);
 
-    ResponseEntity<AdminEntity> verPerfil(Long id) throws Exception;
+    ResponseEntity<AdminEntity> verPerfil(Long id);
 
-    ResponseEntity<AdminEntity> editarPerfil(AdminEntity dadosAdmin, long id) throws Exception;
+    ResponseEntity<AdminEntity> editarPerfil(AdminEntity dadosAdmin);
 
     ResponseEntity<?> apagarConta(long id);
 

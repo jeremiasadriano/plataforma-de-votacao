@@ -16,12 +16,9 @@ public class PagesController {
         return "index";
     }
 
-    @GetMapping("/pages/profile")
-    public String perfil(HttpSession session) {
-        if (session.getAttribute("Username") == null) {
-            return "redirect:/";
-        }
-        return "pages/profile";
+    @GetMapping("/pages/contaOff")
+    public String contaDesativada() {
+        return "pages/contaDesativada";
     }
 
     @GetMapping("/pages/community")
@@ -29,20 +26,35 @@ public class PagesController {
         if (session.getAttribute("Username") == null) {
             return "redirect:/";
         }
-        return "pages/community";
+        return "pages/gerente/community";
     }
 
+    @GetMapping("/pages/recuperarpass")
+    public String recuperar() {
+        return "pages/recuperarpass";
+    }
 
+    @GetMapping("/login/admin/")
+    public String loginAdmin() {
+        return "adminLogin";
+    }
+
+    //Mandar o session de ralo pohra!
     @GetMapping("/session/destroy")
     public String sessionDestroy(HttpSession session) {
         if (session.getAttribute("Username") != null) {
             session.isNew();
             session.removeAttribute("Username");
-            return "redirect:/";
-        } else {
-            return "redirect:/";
         }
+        return "redirect:/";
     }
 
-
+    @GetMapping("/adminsession/destroy")
+    public String sessionADminDestroy(HttpSession session) {
+        if (session.getAttribute("Admin") != null) {
+            session.isNew();
+            session.removeAttribute("Admin");
+        }
+        return "redirect:/";
+    }
 }

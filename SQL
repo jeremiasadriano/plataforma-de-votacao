@@ -1,0 +1,10 @@
+insert into curso_table(id,data_insercao,nome_curso) values (1,2023,"Administração e Gestão de Empresas"),
+                                                            (2,2023,"Arquitetura"),
+                                                            (3,2023,"Contabilidade e Auditoria"),
+                                                            (4,2023,"Direito"),
+                                                            (5,2023,"Economia e Gestão"),
+                                                            (6,2023,"Gestão Portuária"),
+                                                            (7,2023,"Gestão de recursos"),
+                                                            (8,2023,"Tecnologias de informação");
+
+O banco de dados será criado automaticamente após a execução da aplicação, entretanto, para registrar um novo usuário vai ter que executar a linha à cima.

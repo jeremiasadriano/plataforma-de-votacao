@@ -28,42 +28,28 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public ResponseEntity<String> fazerLogin(String emailEntity, String senhaEntity) {
-        if (emailEntity.isEmpty() || senhaEntity.isEmpty()) return ResponseEntity.badRequest().build();
-        AdminEntity adminEntity = this.adminRepository.findByEmail(emailEntity);
-        if (adminEntity == null) {
-            return ResponseEntity.notFound().build();
-        }
-        String senhaArmazenada = adminEntity.getSenha();
-        if (passwordEncoder.matches(senhaEntity, senhaArmazenada)) {
-            return ResponseEntity.ok().body("Ele existe");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+    public ResponseEntity<AdminEntity> fazerLogin(String emailEntity, String senhaEntity) {
+        AdminEntity adminEntity = this.adminRepository.findByEmailAndSenha(emailEntity, senhaEntity);
+        return ResponseEntity.ok(adminEntity);
     }
 
     @Override
-    public ResponseEntity<AdminEntity> verPerfil(Long id) throws Exception {
+    public ResponseEntity<AdminEntity> verPerfil(Long id) {
         Optional<AdminEntity> adminEntityOptional = this.adminRepository.findById(id);
-        if (adminEntityOptional.isEmpty()) throw new Exception("Dados nao encontrados");
-        return ResponseEntity.ok(adminEntityOptional.get());
+        return adminEntityOptional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @Override
-    public ResponseEntity<AdminEntity> editarPerfil(AdminEntity dadosAdmin, long id) throws Exception {
-        Optional<AdminEntity> adminEntityOptional = this.adminRepository.findById(id);
-
-        if (adminEntityOptional.isEmpty()) throw new Exception("Usuario Vazio");
-
+    public ResponseEntity<AdminEntity> editarPerfil(AdminEntity dadosAdmin) {
+        Optional<AdminEntity> adminEntityOptional = this.adminRepository.findById(dadosAdmin.getId());
+        if (adminEntityOptional.isEmpty()) return ResponseEntity.notFound().build();
+        if (dadosAdmin.getId() == null) return ResponseEntity.notFound().build();
         adminEntityOptional.get().setNome(dadosAdmin.getNome());
-        adminEntityOptional.get().setSenha(dadosAdmin.getSenha());
         adminEntityOptional.get().setSexo(dadosAdmin.getSexo());
-        adminEntityOptional.get().setDataRegistro(dadosAdmin.getDataRegistro());
         adminEntityOptional.get().setEmail(dadosAdmin.getEmail());
-        adminEntityOptional.get().setEstadoConta(dadosAdmin.isEstadoConta());
-        adminEntityOptional.get().setUsernameAdmin(dadosAdmin.getUsernameAdmin());
-        adminEntityOptional.get().setCargoAdmin(dadosAdmin.getCargoAdmin());
-
+        if (!dadosAdmin.getSenha().isEmpty()) {
+            adminEntityOptional.get().setSenha(dadosAdmin.getSenha());
+        }
         return ResponseEntity.ok().body(this.adminRepository.save(adminEntityOptional.get()));
     }
 
@@ -77,5 +63,6 @@ public class AdminServiceImpl implements AdminService {
     public ResponseEntity<List<AdminEntity>> listarAdmin() {
         return ResponseEntity.ok().body(this.adminRepository.findAll());
     }
+
 
 }

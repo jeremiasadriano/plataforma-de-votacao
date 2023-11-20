@@ -26,6 +26,10 @@ public class EstudanteEntity extends UsuarioModel {
     @Column(name = "turno_estudante")
     private String turnoEstudante;
 
+    @NotBlank
+    @Column(name = "animal")
+    private String animal;
+
     @NotNull
     @Column(name = "curso_id")
     private Long cursoId;
@@ -37,6 +41,4 @@ public class EstudanteEntity extends UsuarioModel {
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "estudante_id", referencedColumnName = "id")
     private List<VotoEntity> votoEntities = new ArrayList<>();
-
-
 }

@@ -18,9 +18,13 @@
   </head>
   <body>
     <section class="d-flex">
-      <div class="left-content">
-        <div class="dashboard container text-bg-dark">
-          <h3>Registre-se e tenha a chance de decidir quem será o p</h3>
+      <div class="left-content container text-bg-dark">
+        <div class="dashboard">
+          <div class="text-center" style="margin-top: 5rem">
+            <img th:src="@{/img/UCM.gif}" alt="">
+            <h1>Plataforma de Votação Estudantil da Universidade Católica de Moçambique</h1>
+            <h4>Faculdade de Economia e Gestão</h4>
+          </div>
         </div>
       </div>
       <div class="right-content">
@@ -40,10 +44,18 @@
               <div class="d-flex flex-column gap-2">
                 <label>Endereço de Email</label>
                 <input
-                  type="text"
+                  type="email"
                   class="form-control"
                   name="email"
                   placeholder="70000000@ucm.ac.mz"
+                />
+              </div>
+              <div class="d-flex flex-column gap-2">
+                <label>Qual é o seu animal favorito</label>
+                <input
+                        type="text"
+                        class="form-control"
+                        name="animal"
                 />
               </div>
               <div class="d-flex flex-column gap-2">
@@ -53,6 +65,8 @@
                   class="form-control"
                   name="senha"
                   placeholder="**********"
+                  min="8"
+                  minlength="8"
                 />
               </div>
               <div class="d-flex container-fluid w-100 gap-2">

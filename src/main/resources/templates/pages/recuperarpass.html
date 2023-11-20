@@ -18,17 +18,13 @@
 </head>
 <body>
 <section class="d-flex">
-    <div class="left-content container text-bg-dark">
-        <div class="dashboard">
-            <div class="text-center" style="margin-top: 5rem">
-                <img th:src="@{/img/UCM.gif}" alt="">
-                <h1>Plataforma de Votação Estudantil da Universidade Católica de Moçambique</h1>
-                <h4>Faculdade de Economia e Gestão</h4>
-            </div>
+    <div class="left-content">
+        <div class="dashboard container text-bg-dark">
         </div>
     </div>
     <div class="right-content">
-        <form class="login container" th:action="@{/login}" method="Post">
+
+        <form class="login container" th:action="@{/recuperarPass}" method="Post">
             <div class="container w-75">
                 <h2>Login</h2>
                 <div class="d-flex flex-column gap-4">
@@ -43,30 +39,19 @@
                     </div>
 
                     <div class="d-flex flex-column gap-2">
-                        <label>Palavra passe</label>
+                        <label>Qual é o seu animal favorito?</label>
                         <input
-                                type="password"
+                                type="text"
                                 class="form-control"
-                                name="senha"
-                                placeholder="**********"
-                                min="8"
-                                minlength="8"
+                                name="animal"
                         />
                     </div>
-
-                    <button class="btn text-bg-dark">Login</button>
-                    <div class="alert alert-danger" role="alert" id="wrong_password">
-                        <p th:text="${DataError}" id="wrong_password_text"></p>
-                    </div>
-                    <div class="d-flex gap-lg-5">
-                        <p>
-                            Não tem uma conta? &nbsp;<span class="text-primary"> <a
-                                th:href="@{/pages/registro}">Crie já</a> </span>
-                        </p>
-                        <a th:href="@{/pages/recuperarpass}"> <span
-                                class="text-primary">Esqueceu a palavra passe?</span> </a>
-                    </div>
+                    <p> A sua nova senha é: 123456789, mas antes responda as questões a cima pedidas!</p>
                 </div>
+                <button class="btn btn-success">Recuperar</button>
+            </div>
+            <div class="alert alert-danger" role="alert" id="wrong_password">
+                <p th:text="${dadosInvalidos}" id="wrong_password_text"></p>
             </div>
         </form>
     </div>

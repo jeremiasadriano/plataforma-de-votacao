@@ -78,7 +78,7 @@ public class VotoServiceImpl implements VotoService {
 //        Validar se o estudante já votou ou não
         List<OpcoesVotos> listaOpcoesVotos = dadosVotosOptional.get().getOpcoesVotos();
         for (OpcoesVotos receberListaOpcoesVotos : listaOpcoesVotos) {
-            List<ListaDosVotantes> listarTodasVotos = receberListaOpcoesVotos.todosVotos();
+            List<ListaDosVotantes> listarTodasVotos = receberListaOpcoesVotos.getTodosVotos();
             for (ListaDosVotantes receberListarTodasVotos : listarTodasVotos) {
                 Long idVotante = receberListarTodasVotos.getEstudanteId();
                 if (Objects.equals(idVotante, estudanteId))
@@ -99,7 +99,7 @@ public class VotoServiceImpl implements VotoService {
         if (opcoesVotosOptional.isEmpty() || estudanteEntityOptional.isEmpty())
             return ResponseEntity.badRequest().build();
 
-        List<ListaDosVotantes> listaDosVotantes = opcoesVotosOptional.get().todosVotos();
+        List<ListaDosVotantes> listaDosVotantes = opcoesVotosOptional.get().getTodosVotos();
         for (ListaDosVotantes votantes : listaDosVotantes) {
             if (Objects.equals(votantes.getEstudanteId(), estudanteId)) {
                 this.listaDosVotatantesRepository.deleteById(votantes.getId());
@@ -124,7 +124,7 @@ public class VotoServiceImpl implements VotoService {
         Optional<OpcoesVotos> opcoesVotosOptional = this.opcoesVotosRepository.findById(idOpcao);
         if (opcoesVotosOptional.isEmpty()) return ResponseEntity.badRequest().build();
 
-        List<ListaDosVotantes> listaDosVotantes = opcoesVotosOptional.get().todosVotos();
+        List<ListaDosVotantes> listaDosVotantes = opcoesVotosOptional.get().getTodosVotos();
         ArrayList<String> nomesVotantes = new ArrayList<>();
         for (ListaDosVotantes votantes : listaDosVotantes) {
             Long ids = votantes.getEstudanteId();

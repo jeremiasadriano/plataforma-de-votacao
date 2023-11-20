@@ -9,9 +9,9 @@
     <link
       rel="apple-touch-icon"
       sizes="76x76"
-      href="../../static/img/apple-icon.png"
+      href="../../../static/img/apple-icon.png"
     />
-    <link rel="icon" type="image/png" href="../../static/img/favicon.png" />
+    <link rel="icon" type="image/png" href="../../../static/img/favicon.png" />
     <title>Plataforma de votação estudantil</title>
     <!--     Fonts and icons     -->
     <link
@@ -217,7 +217,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" th:href="@{/profile}">
+            <a class="nav-link" th:href="@{/session/destroy}">
               <div
                 class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center"
               >
@@ -278,7 +278,7 @@
           <div
             class="full-background"
             style="
-              background-image: url('../../static/img/curved-images/white-curved.jpg');
+              background-image: url('../../../static/img/curved-images/white-curved.jpg');
             "
           ></div>
         </div>
@@ -316,7 +316,7 @@
             <ul class="navbar-nav justify-content-end">
               <li class="nav-item d-flex align-items-center">
                 <!-- Perfillllllllll -->
-                <a href="" class="nav-link text-body font-weight-bold px-0">
+                <a th:href="@{/pages/profile}" class="nav-link text-body font-weight-bold px-0">
                   <i class="fa fa-user me-sm-1"></i>
                   <span
                     class="d-sm-inline d-none"
@@ -339,22 +339,24 @@
 
 
       <ul hidden>
-        <li th:each="estudantes : ${listarEstudantesVotes}">
-          <span th:text="${estudantes.getNome()}" id="nomeEstudante" hidden></span>
-          <ul>
-            <li th:each="votos : ${estudantes.getVotoEntities()}">
-              <p hidden th:text="${votos.getTituloVotacao()}" id="titulo"></p>
-              <ul>
-                <li th:each="opcoes : ${votos.getOpcoesVotos()}">
-                  <p th:text="${opcoes.getOpcoes()}" class="anuncio" hidden></p>
-                  <p th:text="${opcoes.getListaDosVotantes()}" class="countVotantes" hidden></p>
-              </ul>
-            </li>
-          </ul>
-        </li>
+        <ul th:if="${not #lists.isEmpty(listarEstudantesVotes)}">
+            <li th:each="estudantes : ${listarEstudantesVotes}">
+            <span th:text="${estudantes.getNome()}" id="nomeEstudante" hidden></span>
+            <ul>
+              <li th:each="votos : ${estudantes.getVotoEntities()}">
+                <p hidden th:text="${votos.getTituloVotacao()}" id="titulo"></p>
+                <ul>
+                  <li th:each="opcoes : ${votos.getOpcoesVotos()}">
+                    <p th:text="${opcoes.getOpcoes()}" class="anuncio" hidden></p>
+                    <p th:text="${opcoes.getListaDosVotantes()}" class="countVotantes" hidden></p>
+                </ul>
+              </li>
+                </ul>
+             </li>
+        </ul>
       </ul>
 
-      <div class="row mt-4">
+      <div class="mt-4">
         <div class="col-lg-7">
           <div class="card z-index-2">
             <div class="card-header pb-0">
@@ -365,9 +367,9 @@
                 <canvas id="vote" class="chart-canvas"></canvas>
               </div>
             </div>
-              <div th:if="${not #lists.isEmpty(listarVotantes)}">
+              <div class="mx-5 d-flex gap-5" th:if="${not #lists.isEmpty(listarVotantes)}">
                   <div th:each="votantes : ${listarVotantes}">
-                      <div class="d-flex gap-5">
+                      <div class="d-flex flex-column">
                           <form th:action="@{'/estudante/votar/' + ${votantes.getId()} + '/' + ${session.Username.getId()}}" method="post">
                               <button class="btn btn-success" name="idOpcao" th:text="${votantes.getOpcoes()}" th:value="${votantes.getId()}"></button>
                               <input type="hidden" name="idEstudante" th:value="${session.Username.getId()}">
@@ -381,53 +383,8 @@
               </div>
           </div>
         </div>
-
+      </div>
           <!-- Aquiiiiiiiiiiiiiiiiiiii -->
-      </div>
-      <div class="row my-4">
-        <div class="col-lg-7 col-md-6 mb-md-0 mb-4">
-          <div class="card">
-            <div class="card-header pb-0">
-              <div class="row">
-                <div class="col-lg-6 col-2">
-                  <h6>Bate papo geral</h6>
-                </div>
-              </div>
-            </div>
-            <div class="card-body px-0 pb-2">
-              <div class="table-responsive">
-                <div class="container">
-                  <p>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                    Perspiciatis vero nemo corrupti. Veritatis quisquam illo
-                    blanditiis sunt accusantium animi quae est eius molestiae.
-                    Perspiciatis quos deserunt excepturi quae, nobis inventore!
-                  </p>
-                  <span>Nome autor</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4 col-md-6 h-50">
-          <div class="card">
-            <div class="card-header pb-0">
-              <h6>Teclado</h6>
-            </div>
-            <div class="container mb-lg-5">
-              <textarea
-                name=""
-                id=""
-                cols="30"
-                rows="10"
-                class="form-control"
-                placeholder="Helo"
-              ></textarea>
-            </div>
-          </div>
-        </div>
-      </div>
-      </div>
     </main>
     <!--   Core JS Files   -->
     <script th:src="@{/js/core/popper.min.js}"></script>
