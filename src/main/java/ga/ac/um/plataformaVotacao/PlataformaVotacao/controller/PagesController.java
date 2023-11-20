@@ -34,9 +34,16 @@ public class PagesController {
         return "pages/recuperarpass";
     }
 
+    //Admin
     @GetMapping("/login/admin/")
     public String loginAdmin() {
         return "adminLogin";
+    }
+
+    @GetMapping("/admin/adicionar")
+    public String adicionarAdmin(HttpSession session) {
+        if (session.getAttribute("Admin") == null) return "redirect:/login/admin/";
+        return "pages/admin/adicionarAdmin";
     }
 
     //Mandar o session de ralo pohra!
@@ -57,4 +64,5 @@ public class PagesController {
         }
         return "redirect:/";
     }
+
 }
