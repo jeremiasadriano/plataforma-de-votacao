@@ -337,53 +337,41 @@
       </nav>
       <!-- End Navbar -->
 
-
-      <ul hidden>
-        <ul th:if="${not #lists.isEmpty(listarEstudantesVotes)}">
-            <li th:each="estudantes : ${listarEstudantesVotes}">
+      <div class="container">
+        <div th:if="${not #lists.isEmpty(listarEstudantesVotes)}">
+          <div th:each="estudantes : ${listarEstudantesVotes}">
             <span th:text="${estudantes.getNome()}" id="nomeEstudante" hidden></span>
-            <ul>
-              <li th:each="votos : ${estudantes.getVotoEntities()}">
-                <p hidden th:text="${votos.getTituloVotacao()}" id="titulo"></p>
-                <ul>
-                  <li th:each="opcoes : ${votos.getOpcoesVotos()}">
-                    <p th:text="${opcoes.getOpcoes()}" class="anuncio" hidden></p>
-                    <p th:text="${opcoes.getListaDosVotantes()}" class="countVotantes" hidden></p>
-                </ul>
-              </li>
-                </ul>
-             </li>
-        </ul>
-      </ul>
-
-      <div class="mt-4">
-        <div class="col-lg-7">
-          <div class="card z-index-2">
-            <div class="card-header pb-0">
-              <h6 id="temaNome">Tema</h6>
-            </div>
-            <div class="card-body p-3">
+            <div th:each="votos : ${estudantes.getVotoEntities()}">
               <div class="grafico">
-                <canvas id="vote" class="chart-canvas"></canvas>
+                <p th:text="${votos.getTituloVotacao()}" class="titulo"></p>
+                <canvas th:id="'vote-' + ${votos.getId()}" class="chart-canvas"></canvas>
+
+                <!-- Movendo o loop de votantes para dentro do loop de gráficos -->
+                <div class="mx-5 d-flex gap-5" th:if="${not #lists.isEmpty(votos.getOpcoesVotos())}">
+                  <div th:each="votantes : ${votos.getOpcoesVotos()}">
+                    <div class="d-flex flex-column">
+                      <form th:action="@{'/estudante/votar/' + ${votantes.getId()} + '/' + ${session.Username.getId()}}" method="post">
+                        <button class="btn btn-success" name="idOpcao" th:text="${votantes.getOpcoes()}" th:value="${votantes.getId()}"></button>
+                        <input type="hidden" name="idEstudante" th:value="${session.Username.getId()}">
+                      </form>
+                      <form th:action="@{'/estudante/remover/' + ${votantes.getId()} + '/' + ${session.Username.getId()}}" method="post">
+                        <button class="btn btn-danger" name="opcoesId" th:text="${votantes.getOpcoes()}" th:value="${votantes.getId()}"></button>
+                        <input type="hidden" name="estudanteId" th:value="${session.Username.getId()}">
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+                <div th:each="opcoes : ${votos.getOpcoesVotos()}">
+                  <p th:text="${opcoes.getOpcoes()}" class="anuncio" hidden></p>
+                  <p th:text="${opcoes.getListaDosVotantes()}" class="countVotantes" hidden></p>
+                </div>
               </div>
             </div>
-              <div class="mx-5 d-flex gap-5" th:if="${not #lists.isEmpty(listarVotantes)}">
-                  <div th:each="votantes : ${listarVotantes}">
-                      <div class="d-flex flex-column">
-                          <form th:action="@{'/estudante/votar/' + ${votantes.getId()} + '/' + ${session.Username.getId()}}" method="post">
-                              <button class="btn btn-success" name="idOpcao" th:text="${votantes.getOpcoes()}" th:value="${votantes.getId()}"></button>
-                              <input type="hidden" name="idEstudante" th:value="${session.Username.getId()}">
-                          </form>
-                        <form th:action="@{'/estudante/remover/' + ${votantes.getId()} + '/' + ${session.Username.getId()}}" method="post">
-                          <button class="btn btn-danger" name="opcoesId" th:text="${votantes.getOpcoes()}" th:value="${votantes.getId()}"></button>
-                          <input type="hidden" name="estudanteId" th:value="${session.Username.getId()}">
-                        </form>
-                      </div>
-                  </div>
-              </div>
           </div>
         </div>
       </div>
+
           <!-- Aquiiiiiiiiiiiiiiiiiiii -->
     </main>
     <!--   Core JS Files   -->

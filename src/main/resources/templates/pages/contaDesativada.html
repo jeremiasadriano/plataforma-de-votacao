@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Plataforma de Votação Estudantil - Conta desativa</title>
@@ -16,6 +16,9 @@
     <h4>A sua conta encontra-se temporariamente desativada, caso queira voltar a ter acesso a mesma, queira por favor
         contactar a secretaria!</h4>
     <p>Plataforma de Votação Estudantil </p>
+    <a th:href="@{/pages/login}">
+        <button class="btn btn-success">Voltar</button>
+    </a>
 </div>
 </body>
 </html>

@@ -1,6 +1,5 @@
 package ga.ac.um.plataformaVotacao.PlataformaVotacao.controller;
 
-import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.Component.Anuncios;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.Component.OpcoesVotos;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.Component.Roles;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.CursoEntity;
@@ -74,19 +73,6 @@ public class EstudanteController {
     public List<EstudanteEntity> entities() {
         return this.estudanteRepository.findAll();
     }
-
-    @ModelAttribute("listaAnuncios")
-    public List<Anuncios> anuncio() {
-        ResponseEntity<List<EstudanteEntity>> response = this.estudanteService.anuncios();
-        if (response.getStatusCode().is2xxSuccessful()) {
-            for (EstudanteEntity estudante : response.getBody()) {
-                return estudante.getAnuncios();
-            }
-        }
-        return Collections.emptyList();
-
-    }
-
     @ModelAttribute("listarVotantes")
     public List<OpcoesVotos> opcoesVotos() {
         ResponseEntity<List<OpcoesVotos>> response = this.votoService.listarOpcoesVoto();

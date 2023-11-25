@@ -3,6 +3,7 @@ package ga.ac.um.plataformaVotacao.PlataformaVotacao.controller;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
 public class PagesController {
@@ -35,11 +36,6 @@ public class PagesController {
     }
 
     //Admin
-    @GetMapping("/login/admin/")
-    public String loginAdmin() {
-        return "adminLogin";
-    }
-
     @GetMapping("/admin/adicionar")
     public String adicionarAdmin(HttpSession session) {
         if (session.getAttribute("Admin") == null) return "redirect:/login/admin/";
@@ -62,7 +58,7 @@ public class PagesController {
             session.isNew();
             session.removeAttribute("Admin");
         }
-        return "redirect:/";
+        return "redirect:/admin/";
     }
 
 }

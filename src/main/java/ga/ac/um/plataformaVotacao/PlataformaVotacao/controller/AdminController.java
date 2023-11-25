@@ -2,6 +2,7 @@ package ga.ac.um.plataformaVotacao.PlataformaVotacao.controller;
 
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.AdminEntity;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.model.EstudanteEntity;
+import ga.ac.um.plataformaVotacao.PlataformaVotacao.repository.AdminRepository;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.AdminService;
 import ga.ac.um.plataformaVotacao.PlataformaVotacao.service.EstudanteService;
 import jakarta.servlet.http.HttpSession;
@@ -19,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class AdminController {
     private final AdminService adminService;
+    private final AdminRepository adminRepository;
     private final EstudanteService estudanteService;
 
     @PostMapping("/admin/login")
@@ -32,6 +34,12 @@ public class AdminController {
         return "redirect:/admin/";
     }
 
+    @GetMapping("/login/admin/")
+    public String loginAdmin() {
+        return "adminLogin";
+    }
+
+    //    Criar admin em caso de não existir
     @GetMapping("/admin/")
     public String adminScreen(HttpSession session) {
         if (session.getAttribute("Admin") == null) {
@@ -43,6 +51,18 @@ public class AdminController {
     @ModelAttribute("todosOsEstudantes")
     public List<EstudanteEntity> listarTodosEstudantes() {
         return this.estudanteService.listarTodosEstudantes();
+    }
+
+    @PostMapping("/admin/criar")
+    public String criarAdmin(HttpSession session, AdminEntity admin) {
+        if (session.getAttribute("Admin") == null) {
+            return "redirect:/login/admin/";
+        } else if (admin == null) {
+            return null;
+        }
+        admin.setSenha("12345678");
+        this.adminRepository.save(admin);
+        return "pages/admin/admin";
     }
 
     @PostMapping("/admin/atualizarEstudante")

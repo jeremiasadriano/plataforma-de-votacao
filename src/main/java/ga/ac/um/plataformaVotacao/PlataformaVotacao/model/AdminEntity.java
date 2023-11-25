@@ -12,8 +12,6 @@ import lombok.Setter;
 @Entity
 @Table(name = "admin_TABLE")
 public class AdminEntity extends UsuarioModel {
-    @NotBlank
     @Column(name = "cargo_admin")
     private String cargoAdmin;
-
 }
