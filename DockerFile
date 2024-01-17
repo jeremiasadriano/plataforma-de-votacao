@@ -1,0 +1,25 @@
+FROM ubuntu:latest AS ubuntu
+
+# Atualiando o sistema
+RUN apt-get update -y && \
+    apt-get install openjdk-17-jdk maven -y 
+
+# Copiando o projeto para dentro do container
+COPY . .
+
+# Compilando o projeto
+RUN mvn clean install
+
+# Expondo a porta 8080
+EXPOSE 8080
+
+FROM openjdk AS openjdk
+
+# Criando o diretório do projeto
+RUN mkdir /app  
+
+# Copiando o projeto para dentro do container
+COPY --from=ubuntu /target/plataforma-de-votacao-0.0.1-SNAPSHOT.jar /app
+
+# Executando o projeto
+CMD ["java", "-jar", "/app/plataforma-de-votacao-0.0.1-SNAPSHOT.jar"]
