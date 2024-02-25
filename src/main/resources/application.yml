@@ -1,7 +1,7 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/plataforma_de_votacao_db
+    url: jdbc:postgresql://localhost:5432/vote-platform
     username: root
     password: Godalzinh0
   jpa:
